@@ -1,18 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clipChildren="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/background_color"
+    tools:context=".activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/frame_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tabBar" />
+
+    <LinearLayout
+        android:id="@+id/tabBar"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/home_button_text"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/same_city"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/samecity_button_text"/>
+        <ImageView
+            android:id="@+id/add_video_btn"
+            android:layout_width="56dp"
+            android:layout_height="36dp"
+            android:background="@mipmap/add_video_button"
+            android:contentDescription="@string/add_video_btn_content_text" />
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/message_text"/>
+        <TextView
+            android:id="@+id/me"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/me_text"/>
+    </LinearLayout>
+
+</RelativeLayout>

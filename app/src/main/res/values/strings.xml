@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MiniTikTok</string>
+    <string name="home_button_text">首页</string>
+    <string name="samecity_button_text">同城</string>
+    <string name="message_text">消息</string>
+    <string name="me_text">我</string>
+    <string name="add_video_btn_content_text">发布视频</string>
 </resources>
