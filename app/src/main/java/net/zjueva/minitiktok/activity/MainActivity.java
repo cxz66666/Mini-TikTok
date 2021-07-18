@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -56,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        btn_addvideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                startActivity(intent);
             }
         });
     }
