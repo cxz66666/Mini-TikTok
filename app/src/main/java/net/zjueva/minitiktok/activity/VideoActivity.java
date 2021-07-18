@@ -3,6 +3,7 @@ package net.zjueva.minitiktok.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.camera2.internal.annotation.CameraExecutor;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
@@ -18,8 +19,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +47,7 @@ public class VideoActivity extends AppCompatActivity {
     private boolean recording = false;
 
     private Context context;
+    private Preview preview;
     private Button recordButton;
     private Button uploadButton;
     private Button cancelButton;
@@ -64,7 +68,6 @@ public class VideoActivity extends AppCompatActivity {
         context = this;
 
         initButton();
-
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
@@ -75,6 +78,13 @@ public class VideoActivity extends AppCompatActivity {
             else openCameraPreview();
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
 
     private void requestCameraPermission() {
         Log.d(TAG, "requestCameraPermission");
@@ -97,6 +107,13 @@ public class VideoActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }, 700);
                 Intent intent = new Intent(VideoActivity.this, UploadActivity.class);
                 intent.putExtra("video_path", mp4Path);
                 startActivity(intent);
@@ -139,13 +156,13 @@ public class VideoActivity extends AppCompatActivity {
         cameraProviderFuture.addListener( () -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                Preview preview = new Preview.Builder().build();
+                preview = new Preview.Builder().build();
                 CameraSelector cameraSelector = new CameraSelector.Builder()
                         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                         .build();
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
                 videoCapture = new VideoCapture.Builder().build();
-                Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, videoCapture, preview);
+                cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, videoCapture, preview);
             }catch(Exception e){
                 e.printStackTrace();
             }

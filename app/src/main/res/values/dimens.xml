@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="video_preview_height">288sp</dimen>
+    <dimen name="video_preview_width">162sp</dimen>
 </resources>

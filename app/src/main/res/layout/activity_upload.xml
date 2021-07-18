@@ -4,6 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000010"
     tools:context=".activity.UploadActivity">
+
+    <ImageView
+        android:id="@+id/left_video_preview"
+        android:layout_width="@dimen/video_preview_width"
+        android:layout_height="@dimen/video_preview_height"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/right_video_preview"
+        android:layout_width="@dimen/video_preview_width"
+        android:layout_height="@dimen/video_preview_height"
+        android:layout_marginTop="72dp"
+        android:layout_marginRight="28dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/video_commit_upload"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="30sp"
+
+        android:text="@string/video_upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
