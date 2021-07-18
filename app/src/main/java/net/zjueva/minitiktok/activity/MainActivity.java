@@ -23,10 +23,11 @@ import android.widget.Toast;
 
 import net.zjueva.minitiktok.R;
 
+import net.zjueva.minitiktok.fragment.HomeFragment;
 import  net.zjueva.minitiktok.utils.Constant;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE = 1025;
     private TextView btn_home;
     private TextView btn_samecity;
@@ -39,13 +40,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        checkAPPPermission();
+        setContentView(R.layout.activity_main);
+        hideTop();
+        checkAPPPermission(REQUEST_CODE);
         bindButtonListener();
+        updateFragment(HomeFragment.newInstance(),Constant.home_id);
     }
 
-
+    //设置按钮的监听事件
     private void bindButtonListener(){
         btn_home=(TextView)findViewById(R.id.home);
         btn_samecity=(TextView)findViewById(R.id.same_city);
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         btn_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                updateFragment(HomeFragment.newInstance(),Constant.home_id);
             }
         });
 
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //替换fragment为指定的fragment，
+    //替换fragment为指定的fragment，设置字体加粗，
     private void updateFragment(Fragment fragment,int fragmentIndex){
         if(nowFragment==fragmentIndex){
             return;
@@ -90,20 +93,18 @@ public class MainActivity extends AppCompatActivity {
                     btn_me.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             }
         }
-
-    }
-
-        //checkAPPPermission 用于获取权限（外部文件读 外部文件写）
-        private void checkAPPPermission(){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // 先判断有没有权限
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-                }
-            }
+        switch(fragmentIndex){
+            case Constant.home_id:
+                btn_home.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            case Constant.samecity_id:
+                btn_samecity.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            case Constant.message_id:
+                btn_message.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            case Constant.me_id:
+                btn_me.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
+        nowFragment=fragmentIndex;
+    }
 
 
         //获取权限的回调函数，用于接收用户选择的授予权限
