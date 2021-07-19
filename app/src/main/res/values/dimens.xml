@@ -1,7 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="video_preview_height">288dp</dimen>
-    <dimen name="video_preview_width">162dp</dimen>
+    <dimen name="video_preview_height">160dp</dimen>
+    <dimen name="video_preview_width">100dp</dimen>
     <dimen name="round_button_size">100dip</dimen>
     <dimen name="progress_bar_size">120dip</dimen>
 </resources>

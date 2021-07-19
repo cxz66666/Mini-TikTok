@@ -30,6 +30,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+// TODO: 切换前后置摄像头和左上角的返回按钮
 public class VideoActivity extends AppCompatActivity {
 
     private int CAMERA_PERMISSION = 1001;
@@ -59,6 +61,7 @@ public class VideoActivity extends AppCompatActivity {
     private Context context;
     private Preview preview;
     private TextView timerTextView;
+    private ImageView closePreviewImage;
     private LottieAnimationView lottieProgressBarView;
     private Button recordButton;
     private Button uploadButton;
@@ -102,7 +105,8 @@ public class VideoActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         recordButton = (Button) findViewById(R.id.video_record);
         uploadButton = (Button) findViewById(R.id.video_upload);
-        cancelButton = (Button) findViewById(R.id.video_cancel_upload);
+        cancelButton = (Button) findViewById(R.id.video_cancel_recording);
+        closePreviewImage = (ImageView) findViewById(R.id.close_recording_image);
         timerTextView = (TextView) findViewById(R.id.timer_text);
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
         context = this;
@@ -110,6 +114,7 @@ public class VideoActivity extends AppCompatActivity {
         timerTextView.setAlpha(0.0f);
 
         initButton();
+        initImageButton();
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
@@ -122,8 +127,19 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d(TAG, "On new intent: " + cameraProvider.toString());
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+
+    }
+
+    @Override
+    public void onBackPressed () {
 
     }
 
@@ -139,6 +155,13 @@ public class VideoActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.RECORD_AUDIO},
                 AUDIO_PERMISSION);
+    }
+
+    private void initImageButton() {
+        closePreviewImage.setOnClickListener((View v) -> {
+            Intent intent = new Intent(VideoActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initButton(){
@@ -213,6 +236,7 @@ public class VideoActivity extends AppCompatActivity {
 
 
     private void bindPreview() {
+        cameraProvider.unbindAll();
         Preview preview = new Preview.Builder()
                 .build();
 

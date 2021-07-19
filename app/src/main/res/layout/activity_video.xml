@@ -17,6 +17,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"></androidx.camera.view.PreviewView>
 
+    <ImageView
+        android:id="@+id/close_recording_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_close_white_24dp"/>
+
     <TextView
         android:id="@+id/timer_text"
         android:layout_width="wrap_content"
@@ -71,7 +81,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/video_cancel_upload"
+        android:id="@+id/video_cancel_recording"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"

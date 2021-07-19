@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
@@ -43,6 +44,10 @@ public class UploadActivity extends AppCompatActivity {
     private Button commitUploadButton;
     private ImageView leftVideoPreview;
     private ImageView rightVideoPreview;
+    private ImageView onlyVideoPreview;
+
+    private ImageView backIcon;
+    private ImageView cancelIcon;
 
     private Bitmap leftVideoThumbnail;
     private Bitmap rightVideoThumbnail;
@@ -57,9 +62,16 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        initButtons();
         leftVideoPreview = (ImageView) findViewById(R.id.left_video_preview);
         rightVideoPreview = (ImageView) findViewById(R.id.right_video_preview);
+        onlyVideoPreview = (ImageView) findViewById(R.id.only_video_preview);
+
+        backIcon = (ImageView) findViewById(R.id.upload_back_icon);
+        cancelIcon = (ImageView) findViewById(R.id.video_cancel_upload);
+        commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
+
+        initButton();
+        initIcon();
 
         Bundle extras = getIntent().getExtras();
         mp4Path = (String) extras.get("video_path");
@@ -86,6 +98,7 @@ public class UploadActivity extends AppCompatActivity {
                     public void run() {
                         leftVideoPreview.setImageBitmap(leftVideoThumbnail);
                         rightVideoPreview.setImageBitmap(rightVideoThumbnail);
+                        onlyVideoPreview.setImageBitmap(leftVideoThumbnail);
                     }
                 });
             }
@@ -106,6 +119,17 @@ public class UploadActivity extends AppCompatActivity {
             // TODO: 要不要考虑加一个默认的图片上去（虽然好像没啥用）
         }
         */
+    }
+
+    public void initIcon() {
+        backIcon.setOnClickListener((View v) -> {
+            Intent intent = new Intent(UploadActivity.this, VideoActivity.class);
+            startActivity(intent);
+        });
+        cancelIcon.setOnClickListener((View v) -> {
+            Intent intent = new Intent(UploadActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initNetwork() {
@@ -176,21 +200,19 @@ public class UploadActivity extends AppCompatActivity {
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     }
 
-    private void initButtons() {
-        commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
+    private void initButton() {
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
             uploadVideo(leftVideoThumbnail);
-            // TODO: 选择cover_image
+            // TODO: 选择cover_image（这个暂时不实现）
 
             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
             startActivity(intent);
-            // TODO: 不知道要不要考虑录像场景的处理
         });
     }
 
     private void uploadVideo(Bitmap coverImageBitmap) {
-        // TODO: 上传
+        // TODO: 上传的studentid和username哪里来
         String userName = "";
         String studentId = "";
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
@@ -211,8 +233,8 @@ public class UploadActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(UploadActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, response.message());
-                    finish();
-                    // TODO: 跳转回初始界面
+                    Intent intent = new Intent(UploadActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
             }
 
