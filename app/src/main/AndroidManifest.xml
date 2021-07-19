@@ -21,8 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.UploadActivity"></activity>
-        <activity android:name=".activity.VideoActivity" />
+        <activity android:name=".activity.UploadActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.VideoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CameraActivity"
             android:label="@string/title_activity_camera"

@@ -11,41 +11,79 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-    </androidx.camera.view.PreviewView>
-    
-    <Button
-        android:id="@+id/video_record"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></androidx.camera.view.PreviewView>
+
+    <TextView
+        android:id="@+id/timer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="@string/start_recording"
+        app:layout_constraintBottom_toTopOf="@id/video_record"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/video_record"
+        android:layout_width="@dimen/round_button_size"
+        android:layout_height="@dimen/round_button_size"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/shape_circle"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_progress_bar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_marginBottom="60dp"
+        android:alpha="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/loading_blue" />
+
+
     <Button
         android:id="@+id/video_upload"
-        android:layout_width="150sp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30sp"
-        android:layout_marginBottom="30sp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_upload_button"
 
-        android:text="@string/video_upload"
+        android:text="@string/video_next_step"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+
+        android:foregroundGravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/video_cancel_upload"
-        android:layout_width="150sp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30sp"
-        android:layout_marginBottom="30sp"
-
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_cancel_button"
 
         android:text="@string/video_cancel_upload"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:foregroundGravity="center_vertical"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 

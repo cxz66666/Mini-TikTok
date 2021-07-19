@@ -7,23 +7,33 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Size;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import net.zjueva.minitiktok.R;
+import net.zjueva.minitiktok.model.UploadVideoInfo;
+import net.zjueva.minitiktok.model.VideoUploadResponse;
 import net.zjueva.minitiktok.utils.Constant;
 import net.zjueva.minitiktok.IApi;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -125,8 +135,10 @@ public class UploadActivity extends AppCompatActivity {
 
         rightVideoThumbnail = retriever.getFrameAtTime(centerFrameTime, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         if(rightVideoThumbnail == null) rightVideoThumbnail = ThumbnailUtils.createVideoThumbnail(mp4Path, MediaStore.Images.Thumbnails.MINI_KIND);
+        if(rightVideoThumbnail == null) rightVideoThumbnail = retriever.getFrameAtTime();
         leftVideoThumbnail = retriever.getFrameAtTime(-1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         if(leftVideoThumbnail == null) leftVideoThumbnail = ThumbnailUtils.createVideoThumbnail(mp4Path, MediaStore.Images.Thumbnails.MINI_KIND);
+        if(leftVideoThumbnail == null) leftVideoThumbnail = retriever.getFrameAtTime();
 
         Log.d(TAG, String.format("%s", leftVideoThumbnail.toString()));
         Log.d(TAG, String.format("%s", rightVideoThumbnail.toString()));
@@ -168,7 +180,8 @@ public class UploadActivity extends AppCompatActivity {
         commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
-            uploadVideo();
+            uploadVideo(leftVideoThumbnail);
+            // TODO: 选择cover_image
 
             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
             startActivity(intent);
@@ -176,8 +189,88 @@ public class UploadActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadVideo() {
+    private void uploadVideo(Bitmap coverImageBitmap) {
         // TODO: 上传
+        String userName = "";
+        String studentId = "";
+        UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
 
+        Call<VideoUploadResponse> response = api.submitVideo(uploadVideoInfo.getStudentId(),
+                                                uploadVideoInfo.getUserName(),
+                                                "",
+                                                uploadVideoInfo.getCoverImage(),
+                                                uploadVideoInfo.getVideo(),
+                                                uploadVideoInfo.getToken());
+
+        response.enqueue(new Callback<VideoUploadResponse>() {
+            @Override
+            public void onResponse(Call<VideoUploadResponse> call, Response<VideoUploadResponse> response) {
+                if(!response.isSuccessful()) {
+                    Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(UploadActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, response.message());
+                    finish();
+                    // TODO: 跳转回初始界面
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VideoUploadResponse> call, Throwable t) {
+                Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+    private UploadVideoInfo composeVideoBody(String userName, String studentId, String videoPath, Bitmap coverImageBitmap) {
+        UploadVideoInfo result = new UploadVideoInfo();
+        result.setToken(Constant.token);
+        result.setStudentId(studentId);
+        result.setUserName(userName);
+        try {
+            byte []videoByte = convertInputStreamToBytes(new FileInputStream(new File(videoPath)));
+            MultipartBody.Part video = MultipartBody.Part.createFormData("video", "upload.mp4",
+                    RequestBody.create(MediaType.parse("multipart/form_data"), videoByte));
+            result.setVideo(video);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            coverImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte []coverImageByte = baos.toByteArray();
+            MultipartBody.Part coverImage = MultipartBody.Part.createFormData("video", "upload.mp4",
+                    RequestBody.create(MediaType.parse("multipart/form_data"), coverImageByte));
+            result.setCoverImage(coverImage);
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private static byte[] convertInputStreamToBytes(InputStream is) {
+        byte []videoBytes = null;
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // FileInputStream fis = new FileInputStream(new File(videoPath));
+            byte []buf = new byte[1024];
+            int n;
+            while( (n = is.read(buf)) != -1) {
+                baos.write(buf, 0,  n);
+            }
+            videoBytes = baos.toByteArray();
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return videoBytes;
+    }
+
+    private static byte[] convertBitmapToBytes(Bitmap imageBitmap) {
+        return null;
     }
 }

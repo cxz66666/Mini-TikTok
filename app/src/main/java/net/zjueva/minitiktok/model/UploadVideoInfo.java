@@ -1,4 +1,4 @@
-package net.zjueva.minitiktok;
+package net.zjueva.minitiktok.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -33,11 +33,11 @@ public class UploadVideoInfo {
         this.userName = userName;
     }
 
-    public MultipartBody.Part getCover_image() {
+    public MultipartBody.Part getCoverImage() {
         return coverImage;
     }
 
-    public void setCover_image(MultipartBody.Part cover_image) {
+    public void setCoverImage(MultipartBody.Part cover_image) {
         this.coverImage = cover_image;
     }
 
