@@ -1,140 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <ImageView
-        android:id="@+id/background"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:src="@mipmap/person_background"
-        android:scaleType="centerCrop"/>
-   <LinearLayout
-       android:id="@+id/avatar_wrap"
-       android:layout_below="@+id/background"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal">
-       <de.hdodenhof.circleimageview.CircleImageView
-           android:id="@+id/avatar_image"
-           android:layout_width="100dp"
-           android:layout_height="100dp"
-           android:layout_marginTop="-20dp"
-           android:layout_marginStart="20dp"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
 
-           android:src="@drawable/avatar"
-           app:civ_border_width="4dp"
-           app:civ_border_color="@color/exo_black_opacity_60"/>
-       <Button
-           android:layout_width="match_parent"
-           android:layout_height="40dp"
-           android:background="#f94144"
-           android:text="+ 关注"
-           android:textColor="@color/white"
-           android:textSize="20sp"
-           android:layout_marginTop="10dp"
-           android:layout_marginLeft="40dp"
-           android:layout_marginRight="60dp"
-           />
-   </LinearLayout>
-    <LinearLayout
-        android:layout_below="@+id/avatar_wrap"
-        android:id="@+id/detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="永远的神"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/dy_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="抖音号: uzi_yyds"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_marginTop="5dp"
-            />
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
+            android:id="@+id/avatar_wrap"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/zan_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="333.4w"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="20dp"
+
+                android:src="@drawable/avatar"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@color/exo_black_opacity_60"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#f94144"
+                android:text="+ 关注"
                 android:textColor="@color/white"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/huozan_text"
-                android:textColor="@color/color_simple_text"
-                android:textSize="16sp"
-                android:layout_marginStart="3dp"
-                />
-
-            <TextView
-                android:id="@+id/focus_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="32"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/white"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/guanzhu_text"
-                android:layout_marginStart="3dp"
-                android:textColor="@color/color_simple_text"
-                android:textSize="16sp"
-                />
-
-            <TextView
-                android:id="@+id/follwer_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="200w"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/white"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fensi_text"
-                android:layout_marginStart="3dp"
-                android:textColor="@color/color_simple_text"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="60dp"
                 />
         </LinearLayout>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/avatar_wrap"
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="永远的神"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/detail"
-        android:id="@+id/recycle_view_photo"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</RelativeLayout>
+            <TextView
+                android:id="@+id/dy_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="抖音号: uzi_yyds"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                />
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/zan_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="333.4w"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/huozan_text"
+                    android:textColor="@color/color_simple_text"
+                    android:textSize="16sp"
+                    android:layout_marginStart="3dp"
+                    />
+
+                <TextView
+                    android:id="@+id/focus_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="32"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guanzhu_text"
+                    android:layout_marginStart="3dp"
+                    android:textColor="@color/color_simple_text"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/follwer_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200w"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fensi_text"
+                    android:layout_marginStart="3dp"
+                    android:textColor="@color/color_simple_text"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/detail"
+            android:id="@+id/recycle_view_photo"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

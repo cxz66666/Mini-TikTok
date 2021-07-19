@@ -14,31 +14,57 @@
         android:layout_height="30dp"
         android:background="@drawable/icon_live" />
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="关注"
-            android:textColor="#fff"
-            android:textSize="16sp" />
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabTextColor="@color/white"
+        app:tabUnboundedRipple="true"
+        />
 
-        <View
-            android:layout_width="16dp"
-            android:layout_height="wrap_content" />
+    <!--
+      tabIndicatorColor  指示器颜色
+      tabIndicatorHeight 指示器高度
+      tabIndicatorFullWidth  设置为false 则指示器跟文本宽度一致
+      tabUnboundedRipple 设置为true点击时会有一个水波纹效果
+      tabGravity 可设置center或fill；center指的是居中显示，fill指的是沾满全屏。
+      tabMode 可设置fixed和 scrollable；fixed：指的是固定tab；scrollable指的是tab可滑动。
+      tabTextColor tab文字颜色
+      tabSelectedTextColor 选中时的tab颜色
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="推荐"
-            android:textColor="#fff"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+  -->
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="关注"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="16sp" />-->
+
+        <!--<View-->
+            <!--android:layout_width="16dp"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="推荐"-->
+            <!--android:textColor="#fff"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textStyle="bold" />-->
+    <!--</LinearLayout>-->
 
     <View
         android:layout_width="30dp"
