@@ -30,15 +30,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textSize="16sp"
             android:text="@string/home_button_text"
-            android:textColor="@color/white" />
+            android:textColor="@color/color_text_darker" />
         <TextView
             android:id="@+id/same_city"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
+            android:textColor="@color/color_text_darker"
             android:gravity="center"
+            android:textSize="16sp"
             android:text="@string/samecity_button_text"/>
         <ImageView
             android:id="@+id/add_video_btn"
@@ -51,16 +53,18 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
+            android:textColor="@color/color_text_darker"
             android:gravity="center"
+            android:textSize="16sp"
             android:text="@string/message_text"/>
         <TextView
             android:id="@+id/me"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
+            android:textColor="@color/color_text_darker"
             android:gravity="center"
+            android:textSize="16sp"
             android:text="@string/me_text"/>
     </LinearLayout>
 

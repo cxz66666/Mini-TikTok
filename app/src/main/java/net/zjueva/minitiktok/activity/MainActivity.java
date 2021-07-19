@@ -84,24 +84,25 @@ public class MainActivity extends BaseActivity {
         if(nowFragment>=0){
             switch (fragmentIndex){
                 case Constant.home_id:
-                    btn_home.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    btn_home.setTextColor(getResources().getColor(R.color.color_simple_text));
                 case Constant.samecity_id:
-                    btn_samecity.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    btn_samecity.setTextColor(getResources().getColor(R.color.color_simple_text));
                 case Constant.message_id:
-                    btn_message.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    btn_message.setTextColor(getResources().getColor(R.color.color_simple_text));
                 case Constant.me_id:
-                    btn_me.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                    btn_me.setTextColor(getResources().getColor(R.color.color_simple_text));
             }
         }
+        //设置粗体
         switch(fragmentIndex){
             case Constant.home_id:
-                btn_home.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                btn_home.setTextColor(getResources().getColor(R.color.white));
             case Constant.samecity_id:
-                btn_samecity.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                btn_samecity.setTextColor(getResources().getColor(R.color.white));
             case Constant.message_id:
-                btn_message.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                btn_message.setTextColor(getResources().getColor(R.color.white));
             case Constant.me_id:
-                btn_me.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                btn_me.setTextColor(getResources().getColor(R.color.white));
         }
         nowFragment=fragmentIndex;
     }

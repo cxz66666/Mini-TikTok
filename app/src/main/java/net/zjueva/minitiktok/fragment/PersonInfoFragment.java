@@ -74,8 +74,8 @@ public class PersonInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_person_info, container,false);
 
-        CircleImageView circleImageView=v.findViewById(R.id.avatar_image);
-        circleImageView.bringToFront();//把头像放到前面
+//        CircleImageView circleImageView=v.findViewById(R.id.avatar_image);
+//        circleImageView.bringToFront();//把头像放到前面
 
         mRecyclerView=v.findViewById(R.id.recycle_view_photo);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));//设置layoutmanager
