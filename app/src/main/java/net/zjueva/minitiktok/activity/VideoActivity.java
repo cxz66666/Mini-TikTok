@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +55,7 @@ public class VideoActivity extends AppCompatActivity {
     private int WRITE_PERMISSION = 1025;
     private String mp4Path = "";
     private boolean recording = false;
-    private int timerDecimalSecond = 0;
+    private boolean usingBackCamera = true;
     private long timerStart;
 
 
@@ -62,6 +63,7 @@ public class VideoActivity extends AppCompatActivity {
     private Preview preview;
     private TextView timerTextView;
     private ImageView closePreviewImage;
+    private ImageView changeCameraImage;
     private LottieAnimationView lottieProgressBarView;
     private Button recordButton;
     private Button uploadButton;
@@ -107,6 +109,7 @@ public class VideoActivity extends AppCompatActivity {
         uploadButton = (Button) findViewById(R.id.video_upload);
         cancelButton = (Button) findViewById(R.id.video_cancel_recording);
         closePreviewImage = (ImageView) findViewById(R.id.close_recording_image);
+        changeCameraImage = (ImageView) findViewById(R.id.change_camera);
         timerTextView = (TextView) findViewById(R.id.timer_text);
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
         context = this;
@@ -161,6 +164,16 @@ public class VideoActivity extends AppCompatActivity {
         closePreviewImage.setOnClickListener((View v) -> {
             Intent intent = new Intent(VideoActivity.this, MainActivity.class);
             startActivity(intent);
+        });
+
+        changeCameraImage.setOnClickListener((View v) -> {
+            if(recording) {
+                Toast.makeText(VideoActivity.this, "你需要先停止录制", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                usingBackCamera = !usingBackCamera;
+                bindPreview();
+            }
         });
     }
 
@@ -240,8 +253,10 @@ public class VideoActivity extends AppCompatActivity {
         Preview preview = new Preview.Builder()
                 .build();
 
+        int lensFacing = (usingBackCamera == true) ? CameraSelector.LENS_FACING_BACK : CameraSelector.LENS_FACING_FRONT;
+
         CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .requireLensFacing(lensFacing)
                 .build();
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());

@@ -9,10 +9,12 @@ import android.media.Image;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UploadActivity extends AppCompatActivity {
 
     private String mp4Path = "";
+    private String shareText = "";
     private Button commitUploadButton;
     private ImageView leftVideoPreview;
     private ImageView rightVideoPreview;
@@ -51,6 +54,8 @@ public class UploadActivity extends AppCompatActivity {
 
     private Bitmap leftVideoThumbnail;
     private Bitmap rightVideoThumbnail;
+
+    private EditText editText;
 
     private IApi api;
 
@@ -69,6 +74,8 @@ public class UploadActivity extends AppCompatActivity {
         backIcon = (ImageView) findViewById(R.id.upload_back_icon);
         cancelIcon = (ImageView) findViewById(R.id.video_cancel_upload);
         commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
+
+        editText = (EditText) findViewById(R.id.share_text);
 
         initButton();
         initIcon();
@@ -116,7 +123,6 @@ public class UploadActivity extends AppCompatActivity {
             videoPreview.setImageBitmap(videoThumbnail);
         } catch(IOException e){
             e.printStackTrace();
-            // TODO: 要不要考虑加一个默认的图片上去（虽然好像没啥用）
         }
         */
     }
@@ -204,7 +210,7 @@ public class UploadActivity extends AppCompatActivity {
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
             uploadVideo(leftVideoThumbnail);
-            // TODO: 选择cover_image（这个暂时不实现）
+            // TODO: 选择cover_image（暂时不做）
 
             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
             startActivity(intent);
@@ -215,6 +221,7 @@ public class UploadActivity extends AppCompatActivity {
         // TODO: 上传的studentid和username哪里来
         String userName = "";
         String studentId = "";
+        shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
 
         Call<VideoUploadResponse> response = api.submitVideo(uploadVideoInfo.getStudentId(),
@@ -231,10 +238,18 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    // TODO: 上传成功的延迟显示bug还没修复
                     Toast.makeText(UploadActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, response.message());
-                    Intent intent = new Intent(UploadActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(UploadActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }, 0);
+
                 }
             }
 

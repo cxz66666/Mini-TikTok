@@ -18,6 +18,16 @@
         app:layout_constraintVertical_bias="0.0"></androidx.camera.view.PreviewView>
 
     <ImageView
+        android:id="@+id/change_camera"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_change_camera_black_24dp"/>
+
+    <ImageView
         android:id="@+id/close_recording_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
