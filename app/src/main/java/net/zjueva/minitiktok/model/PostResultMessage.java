@@ -12,13 +12,33 @@ public class PostResultMessage {
     @SerializedName("image_url")
     String imageUrl;
     @SerializedName("image_w")
-    String image_w;
+    int image_w;
     @SerializedName("image_h")
-    String image_h;
+    int image_h;
     @SerializedName("_id")
     String id;
     @SerializedName("createdAt")
     String createdAt;
     @SerializedName("updatedAt")
     String updatedAt;
+
+    public String getTitle(){
+        return studentId+" "+userName;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
