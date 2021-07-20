@@ -65,7 +65,6 @@ public class VideoFragment extends Fragment {
 
         //开始设置URL
         mVideoPlayer.setUpLazy(URL,false,null,null,"测试");
-
     }
 
     @Override
