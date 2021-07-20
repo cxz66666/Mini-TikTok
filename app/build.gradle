@@ -54,11 +54,7 @@ dependencies {
     implementation 'com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer:v8.1.5-jitpack'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.3'
-    implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.3'
-    implementation 'xyz.doikki.android.dkplayer:videocache:3.3.3'
-
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.github.bumptech.glide:compiler:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
 }

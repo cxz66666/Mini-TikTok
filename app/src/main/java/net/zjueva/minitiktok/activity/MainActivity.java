@@ -24,6 +24,7 @@ import android.widget.Toast;
 import net.zjueva.minitiktok.R;
 
 import net.zjueva.minitiktok.fragment.HomeFragment;
+import net.zjueva.minitiktok.fragment.TikTokListFragment;
 import  net.zjueva.minitiktok.utils.Constant;
 
 
@@ -62,7 +63,12 @@ public class MainActivity extends BaseActivity {
                 updateFragment(HomeFragment.newInstance(),Constant.home_id);
             }
         });
-
+        btn_samecity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateFragment(TikTokListFragment.newInstance(),Constant.samecity_id);
+            }
+        });
         btn_addvideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

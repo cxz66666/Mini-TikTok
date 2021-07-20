@@ -26,6 +26,15 @@ public class TikTokListFragment extends Fragment {
     private TikTokListAdapter mAdapter;
 
 
+    public static TikTokListFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        TikTokListFragment fragment = new TikTokListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
