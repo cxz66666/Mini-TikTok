@@ -12,5 +12,5 @@ public class VideoPlayerActivity extends BaseActivity {
     private int mCurPos;
     private List<PostResultMessage>mVideoList;
 
-    private
+    // private
 }

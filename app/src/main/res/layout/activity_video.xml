@@ -53,6 +53,7 @@
         android:layout_height="@dimen/round_button_size"
         android:layout_marginBottom="70dp"
         android:background="@drawable/shape_circle"
+        android:alpha="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
