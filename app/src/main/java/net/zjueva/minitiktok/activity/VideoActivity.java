@@ -254,7 +254,7 @@ public class VideoActivity extends AppCompatActivity {
                 .build();
 
         int lensFacing = (usingBackCamera == true) ? CameraSelector.LENS_FACING_BACK : CameraSelector.LENS_FACING_FRONT;
-
+        // TODO: 前置摄像头的检测
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(lensFacing)
                 .build();

@@ -241,14 +241,14 @@ public class UploadActivity extends AppCompatActivity {
                     // TODO: 上传成功的延迟显示bug还没修复
                     Toast.makeText(UploadActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, response.message());
-                    Handler handler = new Handler();
+                    Handler handler = new Handler(getMainLooper());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
-                    }, 0);
+                    }, 700);
 
                 }
             }

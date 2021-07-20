@@ -73,6 +73,4 @@ public class VideoPlayerActivity extends BaseActivity{
         Log.d(TAG,"home fragment on destroy");
         GSYVideoManager.releaseAllVideos();
     }
-
-
 }
