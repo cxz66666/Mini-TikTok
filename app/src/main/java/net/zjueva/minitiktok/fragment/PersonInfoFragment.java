@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.model.PersonPhotoModel;
 import net.zjueva.minitiktok.model.PersonPhotoModelLab;
+import net.zjueva.minitiktok.model.PostResultMessage;
 import net.zjueva.minitiktok.net.ThumbnailDownloader;
 
 import java.util.List;
@@ -33,17 +34,17 @@ public class PersonInfoFragment extends Fragment {
     private static final String TAG="PersonInfoFragment";
     private static final String URL_EXTRA="URL";
 
-    private String URL;
+    private PostResultMessage Message;
 
     private RecyclerView mRecyclerView;
 
     private ThumbnailDownloader<PhotoHolder>mThumbnailDownloader;
 
     //创建新Fragment必须使用该方法
-    public static PersonInfoFragment newInstance(String url) {
+    public static PersonInfoFragment newInstance(PostResultMessage msg) {
 
         Bundle args = new Bundle();
-        args.putString(URL_EXTRA,url);
+        args.putParcelable(URL_EXTRA,msg);
         PersonInfoFragment fragment = new PersonInfoFragment();
         fragment.setArguments(args);
         return fragment;
@@ -52,7 +53,7 @@ public class PersonInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        URL=getArguments().getString(URL_EXTRA);
+        Message=getArguments().getParcelable(URL_EXTRA);
 
 
         Handler responseHandler=new Handler();

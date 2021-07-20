@@ -18,6 +18,7 @@ import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.adapter.TikTokVideoAdapter;
 import net.zjueva.minitiktok.fragment.HomeFragment;
 import net.zjueva.minitiktok.fragment.ItemFragment;
+import net.zjueva.minitiktok.model.PostResultMessageLab;
 import net.zjueva.minitiktok.utils.Constant;
 
 
@@ -29,29 +30,30 @@ import java.util.List;
 public class VideoPlayerActivity extends BaseActivity{
 
     private static final String TAG="HomeFragment";
-    private List<String>urlList;
+    private static final String POSITION="position";
+    //从那里开始的
+    private int Pos;
     private ViewPager2 mViewPager2;
 
+
+    public static Intent newIntent(Context context,int pos){
+        Intent i=new Intent(context,VideoPlayerActivity.class);
+        i.putExtra(POSITION,pos);
+        return i;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
-
-        urlList=new ArrayList<>();
-        urlList.add("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-        urlList.add("http://vjs.zencdn.net/v/oceans.mp4");
-        urlList.add("https://media.w3.org/2010/05/sintel/trailer.mp4");
-        urlList.add("https://v-cdn.zjol.com.cn/276984.mp4");
-        urlList.add("https://v-cdn.zjol.com.cn/276985.mp4");
-
+        //获取传来的参数
+        Pos=getIntent().getIntExtra(POSITION,0);
         mViewPager2=findViewById(R.id.viewPager2);
 
-
-        hideTop();
-
-        TikTokVideoAdapter tikTokVideoAdapter=TikTokVideoAdapter.newInstance(this,urlList);
+        TikTokVideoAdapter tikTokVideoAdapter=TikTokVideoAdapter.newInstance(this);
+        PostResultMessageLab.getData(this, tikTokVideoAdapter);
         mViewPager2.setAdapter(tikTokVideoAdapter);
         mViewPager2.setOffscreenPageLimit(3);
+        mViewPager2.setCurrentItem(Pos);
     }
 
     @Override

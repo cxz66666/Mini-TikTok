@@ -40,7 +40,6 @@ public class PersonPhotoModelLab {
         mItems.add(new PersonPhotoModel("https://pic.raynor.top/images/2021/07/02/064D9A76DC3AEEF4275D8EFB2147128C.th.jpg",2341));
         mItems.add(new PersonPhotoModel("https://pic.raynor.top/images/2021/07/13/image-20210713211705571.th.png",2341));
         mItems.add(new PersonPhotoModel("https://pic.raynor.top/images/2021/07/02/image-20210702212418948.th.png",6413));
-
     }
     public List<PersonPhotoModel>getItems(){
         return mItems;

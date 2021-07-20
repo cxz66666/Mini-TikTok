@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.adapter.ItemViewAdapter;
+import net.zjueva.minitiktok.model.PostResultMessage;
 
 public class ItemFragment extends Fragment {
 
@@ -27,7 +28,7 @@ public class ItemFragment extends Fragment {
 
 
 
-    private String URL="";
+    private PostResultMessage Message;
     private ViewPager2 mViewPager2;
     private TabLayout mTabLayout;
     private TabLayoutMediator mediator;
@@ -40,9 +41,9 @@ public class ItemFragment extends Fragment {
     private int activeColor = Color.parseColor("#ffffff"); //选中颜色
     private int normalColor = Color.parseColor("#adb5bd");//正常颜色
 
-    public static ItemFragment newInstance(String url) {
+    public static ItemFragment newInstance(PostResultMessage msg) {
         Bundle args = new Bundle();
-        args.putString(URL_ARGS,url);
+        args.putParcelable(URL_ARGS,msg);
         ItemFragment fragment = new ItemFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,7 +51,7 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        URL= getArguments().getString(URL_ARGS);
+        Message= getArguments().getParcelable(URL_ARGS);
     }
 
     @Nullable
@@ -65,7 +66,7 @@ public class ItemFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ItemViewAdapter itemViewAdapter=ItemViewAdapter.newInstance(getActivity(),URL);
+        ItemViewAdapter itemViewAdapter=ItemViewAdapter.newInstance(getActivity(),Message);
 
 
         mViewPager2.setAdapter(itemViewAdapter);

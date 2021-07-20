@@ -15,14 +15,11 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.adapter.HomePageAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.zjueva.minitiktok.model.PostResultMessageLab;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG="HomeFragment";
-    private List<String>urlList;
     private ViewPager2 mViewPager2;
     //必须使用这玩意建新对象
      public static HomeFragment newInstance() {
@@ -35,12 +32,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        urlList=new ArrayList<>();
-        urlList.add("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-        urlList.add("http://vjs.zencdn.net/v/oceans.mp4");
-        urlList.add("https://media.w3.org/2010/05/sintel/trailer.mp4");
-        urlList.add("https://v-cdn.zjol.com.cn/276984.mp4");
-        urlList.add("https://v-cdn.zjol.com.cn/276985.mp4");
+
     }
 
     @Nullable
@@ -55,7 +47,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        HomePageAdapter homePageAdapter=HomePageAdapter.newInstance(getActivity(),urlList);
+        HomePageAdapter homePageAdapter=HomePageAdapter.newInstance(getActivity());
+        PostResultMessageLab.getData(getActivity(), homePageAdapter);
         mViewPager2.setAdapter(homePageAdapter);
 
     }

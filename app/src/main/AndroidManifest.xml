@@ -29,8 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".CameraActivity"
-            android:label="@string/title_activity_camera"
+            android:name=".activity.VideoPlayerActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.MainActivity"

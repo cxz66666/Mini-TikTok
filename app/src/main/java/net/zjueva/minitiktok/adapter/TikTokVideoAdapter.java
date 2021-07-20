@@ -16,18 +16,21 @@ import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.activity.VideoPlayerActivity;
 import net.zjueva.minitiktok.fragment.ItemFragment;
 import net.zjueva.minitiktok.fragment.VideoFragment;
+import net.zjueva.minitiktok.mInterface.GetResultMessageCallback;
 import net.zjueva.minitiktok.model.PostResultMessage;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 
 
 //使用dvplayer进行播放的播放页面的adapter
-public class TikTokVideoAdapter extends FragmentStateAdapter {
+public class TikTokVideoAdapter extends FragmentStateAdapter implements GetResultMessageCallback<PostResultMessage> {
     private Context mContext;
 
-    private List<String> mList;
+    private List<PostResultMessage> Data;
     private HashSet<Integer> mHashSet;
 
 
@@ -35,31 +38,29 @@ public class TikTokVideoAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
         mContext=fragmentActivity;
         mHashSet=new HashSet<Integer>();
+        Data=new ArrayList<>();
     }
     //获取新的实例
-    public static TikTokVideoAdapter newInstance(@NonNull FragmentActivity fragmentActivity, List<String>mlist){
-        TikTokVideoAdapter tikTokVideoAdapter=new TikTokVideoAdapter(fragmentActivity);
-        tikTokVideoAdapter.setDate(mlist);
-        return tikTokVideoAdapter;
+    public static TikTokVideoAdapter newInstance(@NonNull FragmentActivity fragmentActivity){
+        return new TikTokVideoAdapter(fragmentActivity);
     }
 
-
-    //TODO 修改更新数据的方法，现在这样肯定不对
-    public void setDate(List<String>mlist){
-        mList=mlist;
-        notifyDataSetChanged();
+    @Override
+    public void setData(List<PostResultMessage> item) {
+        Data=item;
     }
+
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         mHashSet.add(position);
-        return VideoFragment.newInstance(mList.get(position));
+        return VideoFragment.newInstance(Data.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return Data.size();
     }
 
     @Override
@@ -71,4 +72,6 @@ public class TikTokVideoAdapter extends FragmentStateAdapter {
     public long getItemId(int position) {
         return position;
     }
+
+
 }

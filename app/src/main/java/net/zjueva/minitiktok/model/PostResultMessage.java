@@ -1,8 +1,11 @@
 package net.zjueva.minitiktok.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class PostResultMessage {
+public class PostResultMessage implements Parcelable {
     @SerializedName("student_id")
     String studentId;
     @SerializedName("user_name")
@@ -21,9 +24,26 @@ public class PostResultMessage {
     String createdAt;
     @SerializedName("updatedAt")
     String updatedAt;
+    public int getImage_w() {
+        return image_w;
+    }
+
+    public void setImage_w(int image_w) {
+        this.image_w = image_w;
+    }
+
+    public int getImage_h() {
+        return image_h;
+    }
+
+    public void setImage_h(int image_h) {
+        this.image_h = image_h;
+    }
+
+
 
     public String getTitle(){
-        return studentId+" "+userName;
+        return studentId;
     }
 
     public String getVideoUrl() {
@@ -41,4 +61,49 @@ public class PostResultMessage {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.studentId);
+        dest.writeString(this.userName);
+        dest.writeString(this.videoUrl);
+        dest.writeString(this.imageUrl);
+        dest.writeInt(this.image_w);
+        dest.writeInt(this.image_h);
+        dest.writeString(this.id);
+        dest.writeString(this.createdAt);
+        dest.writeString(this.updatedAt);
+    }
+
+    public PostResultMessage() {
+    }
+
+    protected PostResultMessage(Parcel in) {
+        this.studentId = in.readString();
+        this.userName = in.readString();
+        this.videoUrl = in.readString();
+        this.imageUrl = in.readString();
+        this.image_w = in.readInt();
+        this.image_h = in.readInt();
+        this.id = in.readString();
+        this.createdAt = in.readString();
+        this.updatedAt = in.readString();
+    }
+
+    public static final Parcelable.Creator<PostResultMessage> CREATOR = new Parcelable.Creator<PostResultMessage>() {
+        @Override
+        public PostResultMessage createFromParcel(Parcel source) {
+            return new PostResultMessage(source);
+        }
+
+        @Override
+        public PostResultMessage[] newArray(int size) {
+            return new PostResultMessage[size];
+        }
+    };
 }
