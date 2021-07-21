@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import net.zjueva.minitiktok.R;
 
+import net.zjueva.minitiktok.RegisterActivity;
 import net.zjueva.minitiktok.fragment.HomeFragment;
 import net.zjueva.minitiktok.fragment.TikTokListFragment;
 import  net.zjueva.minitiktok.utils.Constant;
@@ -74,6 +75,14 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                 startActivity(intent);
+            }
+        });
+        btn_me.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                // TODO: 加上“我的”界面
             }
         });
     }
