@@ -53,7 +53,7 @@ public class VideoPlayerActivity extends BaseActivity{
         PostResultMessageLab.getData(this, tikTokVideoAdapter);
         mViewPager2.setAdapter(tikTokVideoAdapter);
         mViewPager2.setOffscreenPageLimit(3);
-        mViewPager2.setCurrentItem(Pos);
+        mViewPager2.setCurrentItem(Pos,false);
     }
 
     @Override

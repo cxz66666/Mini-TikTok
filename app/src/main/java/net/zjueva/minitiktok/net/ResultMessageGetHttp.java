@@ -29,7 +29,7 @@ public class ResultMessageGetHttp {
         if(studentId!=null){
             urlStr =String.format("%svideo?student_id=%s", Constant.base_url,studentId);
         } else{
-            urlStr =String.format("%smessages", Constant.base_url);
+            urlStr =String.format("%svideo", Constant.base_url);
         }
         PostResultMessageResponse result=null;
         try {

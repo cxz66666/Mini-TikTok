@@ -219,8 +219,8 @@ public class UploadActivity extends AppCompatActivity {
 
     private void uploadVideo(Bitmap coverImageBitmap) {
         // TODO: 上传的studentid和username哪里来
-        String userName = "";
-        String studentId = "";
+        String userName = "无敌dzp";
+        String studentId = "3180100000";
         shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
 
