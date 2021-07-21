@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -47,7 +46,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        HomePageAdapter homePageAdapter=HomePageAdapter.newInstance(getActivity());
+        HomePageAdapter homePageAdapter=HomePageAdapter.newInstance(this);
         PostResultMessageLab.getData(getActivity(), homePageAdapter);
         mViewPager2.setAdapter(homePageAdapter);
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import net.zjueva.minitiktok.fragment.ItemFragment;
@@ -22,15 +23,15 @@ public class HomePageAdapter extends FragmentStateAdapter implements GetResultMe
     private HashSet<Integer>mHashSet;
 
 
-    public HomePageAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
-        mContext=fragmentActivity;
+    public HomePageAdapter(@NonNull Fragment fragment) {
+        super(fragment);
+        mContext=fragment.getContext();
         mHashSet=new HashSet<Integer>();
         Data=new ArrayList<>();
     }
     //获取新的实例
-    public static HomePageAdapter newInstance(@NonNull FragmentActivity fragmentActivity){
-        HomePageAdapter homePageAdapter=new HomePageAdapter(fragmentActivity);
+    public static HomePageAdapter newInstance(@NonNull  Fragment fragment){
+        HomePageAdapter homePageAdapter=new HomePageAdapter(fragment);
         return homePageAdapter;
     }
 

@@ -66,7 +66,7 @@ public class ItemFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ItemViewAdapter itemViewAdapter=ItemViewAdapter.newInstance(getActivity(),Message);
+        ItemViewAdapter itemViewAdapter=ItemViewAdapter.newInstance(this,Message);
 
 
         mViewPager2.setAdapter(itemViewAdapter);
