@@ -34,6 +34,7 @@ import java.io.InputStream;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -224,6 +225,7 @@ public class UploadActivity extends AppCompatActivity {
         shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
 
+
         Call<VideoUploadResponse> response = api.submitVideo(uploadVideoInfo.getStudentId(),
                                                 uploadVideoInfo.getUserName(),
                                                 "",
@@ -239,16 +241,23 @@ public class UploadActivity extends AppCompatActivity {
                 }
                 else {
                     // TODO: 上传成功的延迟显示bug还没修复
+                    VideoUploadResponse body = response.body();
+                    Log.d(TAG, "success: " + body.success);
+
+
                     Toast.makeText(UploadActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, response.message());
+
+
                     Handler handler = new Handler(getMainLooper());
+                    // 好像这种方法没用
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
-                    }, 700);
+                    }, 0);
 
                 }
             }
@@ -276,7 +285,7 @@ public class UploadActivity extends AppCompatActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             coverImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte []coverImageByte = baos.toByteArray();
-            MultipartBody.Part coverImage = MultipartBody.Part.createFormData("video", "upload.mp4",
+            MultipartBody.Part coverImage = MultipartBody.Part.createFormData("cover_image", "cover.jpg",
                     RequestBody.create(MediaType.parse("multipart/form_data"), coverImageByte));
             result.setCoverImage(coverImage);
 

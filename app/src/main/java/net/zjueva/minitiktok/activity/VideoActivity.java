@@ -50,12 +50,13 @@ import java.util.concurrent.Executors;
 // TODO: 切换前后置摄像头和左上角的返回按钮
 public class VideoActivity extends AppCompatActivity {
 
-    private int CAMERA_PERMISSION = 1001;
+    private int CAMERA_AUDIO_PERMISSION = 1001;
     private int AUDIO_PERMISSION = 1;
     private int WRITE_PERMISSION = 1025;
     private String mp4Path = "";
     private boolean recording = false;
     private boolean usingBackCamera = true;
+    private boolean finishRecording = false;
     private long timerStart;
 
 
@@ -113,20 +114,25 @@ public class VideoActivity extends AppCompatActivity {
         timerTextView = (TextView) findViewById(R.id.timer_text);
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
         context = this;
+        finishRecording = false;
 
         timerTextView.setAlpha(0.0f);
 
         initButton();
         initImageButton();
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermission();
-        }
-        else {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO},
+                    CAMERA_AUDIO_PERMISSION);
+            /*
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                requestCameraPermission();
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
                 requestAudioPermission();
-            }
-            else openCameraPreview();
+             */
         }
+        openCameraPreview();
     }
 
     @Override
@@ -151,7 +157,7 @@ public class VideoActivity extends AppCompatActivity {
         Log.d(TAG, "requestCameraPermission");
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.CAMERA},
-                CAMERA_PERMISSION);
+                CAMERA_AUDIO_PERMISSION);
     }
 
     private void requestAudioPermission() {
@@ -171,8 +177,13 @@ public class VideoActivity extends AppCompatActivity {
                 Toast.makeText(VideoActivity.this, "你需要先停止录制", Toast.LENGTH_SHORT).show();
             }
             else {
-                usingBackCamera = !usingBackCamera;
-                bindPreview();
+                if(finishRecording) {
+                    Toast.makeText(VideoActivity.this, "你需要先选择是否上传", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    usingBackCamera = !usingBackCamera;
+                    bindPreview();
+                }
             }
         });
     }
@@ -185,6 +196,7 @@ public class VideoActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finishRecording = false;
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -201,6 +213,7 @@ public class VideoActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finishRecording = false;
                 if(!cameraProvider.isBound(preview))  bindPreview();
                 uploadButton.setVisibility(View.GONE);
                 cancelButton.setVisibility(View.GONE);
@@ -220,8 +233,6 @@ public class VideoActivity extends AppCompatActivity {
                     setLottieAnimation(0);
                     timerStart = System.currentTimeMillis();
                     timerHandler.postDelayed(timerRunnable, 1);
-
-
                     Log.d(TAG, "Start time: " + timerStart);
 
                 }
@@ -305,7 +316,7 @@ public class VideoActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(VideoActivity.this, "视频已保存", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(VideoActivity.this, "视频已保存", Toast.LENGTH_SHORT).show();
                                 // VideoActivity.this.finish();
                             }
                         });
@@ -321,6 +332,7 @@ public class VideoActivity extends AppCompatActivity {
     private void stopRecord() {
         timerHandler.removeCallbacks(timerRunnable);
         videoCapture.stopRecording();
+        finishRecording = true;
 
         setLottieAnimation(1);
         timerTextView.setAlpha(0f);
