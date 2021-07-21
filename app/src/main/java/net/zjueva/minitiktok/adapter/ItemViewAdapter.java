@@ -2,6 +2,7 @@ package net.zjueva.minitiktok.adapter;
 
 import android.app.Person;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import net.zjueva.minitiktok.model.PostResultMessage;
 
 public class ItemViewAdapter extends FragmentStateAdapter {
 
+    private static final String TAG = "ItemViewAdapter";
     private PostResultMessage Message;
     public ItemViewAdapter(@NonNull Fragment fragment) {
         super(fragment);
@@ -35,6 +37,7 @@ public class ItemViewAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Log.d(TAG,"item view created at postion "+position);
         switch (position){
             //TODO 需要通过ViewPager2.setUserInputEnabled(false)禁止滑动 当0或者2 的时候禁止滑动 1的时候开启滑动
             case 0:return FocusFragment.newInstance(Message);

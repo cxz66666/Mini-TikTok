@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
         HomePageAdapter homePageAdapter=HomePageAdapter.newInstance(this);
         PostResultMessageLab.getData(getActivity(), homePageAdapter);
         mViewPager2.setAdapter(homePageAdapter);
-
+        mViewPager2.setOffscreenPageLimit(1);
     }
 
     @Override

@@ -130,7 +130,7 @@ public class VideoFragment extends Fragment {
                 .setShowDragProgressTextOnSeekBar(true)
                 .setCacheWithPlay(true)
                 .setVideoTitle("测试")
-//                .setDismissControlTime(0) 从不显示UI
+                .setDismissControlTime(1500)
                 .setVideoAllCallBack(new GSYSampleCallBack() {
                     @Override
                     public void onPrepared(String url, Object... objects) {
@@ -186,7 +186,7 @@ public class VideoFragment extends Fragment {
                 .setGSYVideoProgressListener(new GSYVideoProgressListener() {
                     @Override
                     public void onProgress(int progress, int secProgress, int currentPosition, int duration) {
-//                        Log.d(TAG," progress " + progress + " secProgress " + secProgress + " currentPosition " + currentPosition + " duration " + duration);
+                        Log.d(TAG," progress " + progress + " secProgress " + secProgress + " currentPosition " + currentPosition + " duration " + duration);
                     }
                 })
                 .build(mVideoPlayer);
@@ -217,7 +217,7 @@ public class VideoFragment extends Fragment {
         super.onResume();
         if(mCurrentPosition>0){
             Log.d(TAG,"onResume current>0");
-            mVideoPlayer.onVideoResume(false);
+            mVideoPlayer.onVideoResume(true);
         } else {
             Log.d(TAG,"onResume current==0");
             mVideoPlayer.postDelayed(new Runnable() {
@@ -247,6 +247,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG,"onDestroy");
         if(mVideoPlayer.getGSYVideoManager().isPlaying()){
             mVideoPlayer.getCurrentPlayer().release();
         }

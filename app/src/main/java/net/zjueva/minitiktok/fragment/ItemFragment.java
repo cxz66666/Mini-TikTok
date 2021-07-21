@@ -91,7 +91,6 @@ public class ItemFragment extends Fragment {
         });
         mediator.attach();
         mViewPager2.setCurrentItem(1,false);
-
     }
     //用来设置tab的大小
     private ViewPager2.OnPageChangeCallback changeCallback = new ViewPager2.OnPageChangeCallback() {
