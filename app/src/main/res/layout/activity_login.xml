@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    tools:context=".activity.RegisterActivity">
+    tools:context=".activity.LoginActivity">
 
     <RelativeLayout
         android:id="@+id/register_toolbar"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/cancel_register"
+            android:id="@+id/cancel_login"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_close_gray_24dp"
@@ -27,7 +27,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/register_input"
+        android:id="@+id/login_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -38,49 +38,34 @@
         >
 
         <TextView
-            android:id="@+id/register_text"
+            android:id="@+id/login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注册"
+            android:text="登录"
             android:textSize="30sp"/>
 
         <EditText
-            android:id="@+id/register_student_id"
+            android:id="@+id/login_student_id"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:gravity="bottom"
-            android:layout_below="@id/register_text"
-            android:hint="请输入学号"
+            android:layout_below="@id/login_text"
+            android:hint="请输入账号"
             />
 
         <EditText
-            android:id="@+id/register_user_name"
+            android:id="@+id/login_password"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:gravity="bottom"
-            android:layout_below="@id/register_student_id"
-            android:hint="请输入用户名" />
-
-        <EditText
-            android:id="@+id/register_password"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:gravity="bottom"
-            android:layout_below="@id/register_user_name"
             android:inputType="textPassword"
-            android:hint="请输入密码"/>
+            android:layout_below="@id/login_student_id"
+            android:hint="密码" />
 
-        <EditText
-            android:id="@+id/register_password_again"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/register_password"
-            android:inputType="textPassword"
-            android:hint="请再次输入密码"/>
     </RelativeLayout>
 
     <Button
-        android:id="@+id/confirm_register"
+        android:id="@+id/confirm_login"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -90,11 +75,11 @@
 
 
         android:background="@drawable/bg_register_button"
-        android:text="注册"
+        android:text="登录"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
 
-        app:layout_constraintTop_toBottomOf="@id/register_input" />
+        app:layout_constraintTop_toBottomOf="@id/login_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

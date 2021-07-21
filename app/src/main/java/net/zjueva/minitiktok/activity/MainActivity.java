@@ -1,7 +1,6 @@
 package net.zjueva.minitiktok.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -10,11 +9,7 @@ import android.Manifest;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.view.View;
 
 import android.widget.ImageView;
@@ -23,7 +18,6 @@ import android.widget.Toast;
 
 import net.zjueva.minitiktok.R;
 
-import net.zjueva.minitiktok.RegisterActivity;
 import net.zjueva.minitiktok.fragment.HomeFragment;
 import net.zjueva.minitiktok.fragment.TikTokListFragment;
 import  net.zjueva.minitiktok.utils.Constant;
@@ -80,7 +74,7 @@ public class MainActivity extends BaseActivity {
         btn_me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 // TODO: 加上“我的”界面
             }

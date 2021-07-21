@@ -1,6 +1,5 @@
-package net.zjueva.minitiktok;
+package net.zjueva.minitiktok.activity;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,16 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
-import net.zjueva.minitiktok.activity.MainActivity;
-import net.zjueva.minitiktok.activity.UploadActivity;
+import net.zjueva.minitiktok.IApi;
+import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.model.RegisterDownloadResponse;
 import net.zjueva.minitiktok.model.RegisterUploadResponse;
 import net.zjueva.minitiktok.model.RegisterUserData;
 import net.zjueva.minitiktok.utils.Constant;
 import net.zjueva.minitiktok.utils.JsonUtil;
+import net.zjueva.minitiktok.utils.UserUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +32,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static net.zjueva.minitiktok.utils.UserUtil.getEditString;
+import static net.zjueva.minitiktok.utils.UserUtil.userInList;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -85,39 +87,37 @@ public class RegisterActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        // 判断是否有重复的用户，如果没有，就把新用户提交了
-                        Call<RegisterDownloadResponse> downloadCall = api.getRegisterInfo(Constant.system_uuid, Constant.token);
-                        Response<RegisterDownloadResponse> downloadResponse = downloadCall.execute();
-                        RegisterDownloadResponse userData = downloadResponse.body();
+                    // 判断是否有重复的用户，如果没有，就把新用户提交了
 
-                        List<RegisterUserData> userDataList = new ArrayList<>();
+                    /*
+                    Call<RegisterDownloadResponse> downloadCall = api.getRegisterInfo(Constant.system_uuid, Constant.token);
+                    Response<RegisterDownloadResponse> downloadResponse = downloadCall.execute();
+                    RegisterDownloadResponse userData = downloadResponse.body();
 
-                        if(userData.data != null) {
-                            userDataList = JsonUtil.fromJson(userData.data,
-                                    new TypeToken<List<RegisterUserData>>(){}.getType());
-                        }
-                        else {
-                            postNewUser(userDataList);
-                            return ;
-                        }
-
-                        if(userData.data != null) Log.d(TAG, userData.data);
-
-                        if(userInList(studentId, userDataList)) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegisterActivity.this, "唯一id重复了", Toast.LENGTH_SHORT).show();
-                                    return ;
-                                }
-                            });
-                        }
-
-                        else postNewUser(userDataList);
-                    } catch(IOException e) {
-                        e.printStackTrace();
+                    if(userData.data != null) {
+                        userDataList = JsonUtil.fromJson(userData.data,
+                                new TypeToken<List<RegisterUserData>>(){}.getType());
                     }
+                    else {
+                        postNewUser(userDataList);
+                        return ;
+                    }
+                    if(userData.data != null) Log.d(TAG, userData.data);
+                    */
+
+                    List<RegisterUserData> userDataList = UserUtil.getUserList(api);
+                    if(userInList(studentId, userDataList)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(RegisterActivity.this, "唯一id重复了", Toast.LENGTH_SHORT).show();
+                                return ;
+                            }
+                        });
+                    }
+
+                    else postNewUser(userDataList);
+
                 }
             }).start();
 
@@ -196,19 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean userInList(String studentId, List<RegisterUserData>data) {
-        if(data == null || data.isEmpty()) return true;
-        for(RegisterUserData user : data) {
-            if(studentId.equals(user.getStudentId())) {
-                return true;
-            }
-            Log.d(TAG, user.getStudentId() + " " + user.getUserName() + " " + user.getPassword());
-        }
 
-        return true;
-    }
 
-    private String getEditString(EditText et) {
-        return et.getText().toString().trim();
-    }
+
 }
