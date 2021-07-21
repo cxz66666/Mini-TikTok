@@ -16,11 +16,11 @@ import net.zjueva.minitiktok.model.PostResultMessage;
 public class ItemViewAdapter extends FragmentStateAdapter {
 
     private PostResultMessage Message;
-    public ItemViewAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
+    public ItemViewAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
-    public static ItemViewAdapter newInstance(FragmentActivity fragment,PostResultMessage msg) {
+    public static ItemViewAdapter newInstance(Fragment fragment,PostResultMessage msg) {
 
         Bundle args = new Bundle();
         ItemViewAdapter itemViewAdapter = new ItemViewAdapter(fragment);
