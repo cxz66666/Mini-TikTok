@@ -73,9 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         cancelRegisterImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO 这里到时候要把返回的页面改了
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

@@ -1,5 +1,7 @@
 package net.zjueva.minitiktok.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,6 +27,9 @@ import net.zjueva.minitiktok.model.PersonPhotoModel;
 import net.zjueva.minitiktok.model.PersonPhotoModelLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
 import net.zjueva.minitiktok.net.ThumbnailDownloader;
+import net.zjueva.minitiktok.utils.Constant;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -53,8 +58,8 @@ public class PersonInfoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Message=getArguments().getParcelable(URL_EXTRA);
 
+        Message=getArguments().getParcelable(URL_EXTRA);
 
         Handler responseHandler=new Handler();
         mThumbnailDownloader=new ThumbnailDownloader<>(responseHandler);
@@ -77,6 +82,14 @@ public class PersonInfoFragment extends Fragment {
 
 //        CircleImageView circleImageView=v.findViewById(R.id.avatar_image);
 //        circleImageView.bringToFront();//把头像放到前面
+
+        SharedPreferences login_info = this.getActivity().getSharedPreferences(Constant.login_status_sp, Context.MODE_PRIVATE);
+        TextView studentIdTextView = v.findViewById(R.id.dy_number);
+        TextView userNameTextView = v.findViewById(R.id.name);
+        userNameTextView.setText(login_info.getString("user_name", "永远的神"));
+        studentIdTextView.setText("抖音号：" + login_info.getString("student_id", "uzi_yyds"));
+        Log.d(TAG, "user_name: "+login_info.getString("user_name", "123"));
+        Log.d(TAG, "student_id" + login_info.getString("student_id", "1"));
 
         mRecyclerView=v.findViewById(R.id.recycle_view_photo);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));//设置layoutmanager

@@ -2,6 +2,8 @@ package net.zjueva.minitiktok.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     private String studentId;
     private String password;
     private String TAG = "LOGINACTIVITY";
+    private SharedPreferences login_info;
+    private SharedPreferences.Editor login_info_editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.login_password);
         confirmLoginButton = findViewById(R.id.confirm_login);
         cancelLoginImageView = findViewById(R.id.cancel_login);
+        login_info = getSharedPreferences(Constant.login_status_sp, MODE_PRIVATE);
+        login_info_editor = login_info.edit();
 
         initNetwork();
         initButton();
@@ -101,7 +107,15 @@ public class LoginActivity extends AppCompatActivity {
                             return ;
                         }
                         toastOnUiThread("登录成功！");
-                        finish();
+                        login_info_editor.putString("student_id", studentId);
+                        login_info_editor.putString("user_name", UserUtil.getUserName(studentId, userDataList));
+                        login_info_editor.putBoolean("login_status", true);
+                        login_info_editor.commit();
+                        Intent intent = new Intent();
+                        intent.putExtra("result", "success");
+                        LoginActivity.this.setResult(1, intent);
+                        LoginActivity.this.finish();
+                        // finish();
                     }
                 }).start();
 
