@@ -10,7 +10,7 @@
     <!--<item android:id="@android:id/secondaryProgress">-->
         <!--<clip>-->
             <!--<shape>-->
-                <!--<solid android:color="#ffe0e0e0"/>-->
+                <!--<solid android:color="#ff0000"/>-->
                 <!--<size android:height="3dp"/>-->
                 <!--<corners android:radius="1.5dp"/>-->
             <!--</shape>-->

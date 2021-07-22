@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +19,14 @@ import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.customview.LikeLayout;
 import net.zjueva.minitiktok.customview.SampleCoverVideo;
+import net.zjueva.minitiktok.mInterface.SeekBarHandler;
 import net.zjueva.minitiktok.model.HomeFragmentLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
@@ -47,6 +49,8 @@ public class VideoFragment extends Fragment {
     private View mIconHeart;
     private View mIconMessage;
     private View mIconShare;
+    private TextView mTitleButton;
+    private TextView mContentButton;
 
     private boolean isLike;
 
@@ -78,6 +82,8 @@ public class VideoFragment extends Fragment {
         mIconHeart=v.findViewById(R.id.icon_heart);
         mIconMessage=v.findViewById(R.id.icon_message);
         mIconShare=v.findViewById(R.id.icon_share);
+        mTitleButton=v.findViewById(R.id.name);
+        mContentButton=v.findViewById(R.id.content);
 //         mLikeLayout.setclip(false);//设置可以超出边界
          return v;
     }
@@ -85,7 +91,8 @@ public class VideoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mTitleButton.setText(Message.getTitle());
+//        mContentButton.setText("cxz666");
         mCircleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +133,20 @@ public class VideoFragment extends Fragment {
         orientationUtils.setEnable(false);
         mVideoPlayer.loadCoverImage(Message.getImageUrl(),R.drawable.error);
 
+        mVideoPlayer.setSeekBarHandler(new SeekBarHandler() { //设置拖拽进度条的回调
+            @Override
+            public void onStartMove() {
+                mTitleButton.setVisibility(View.GONE);
+                mContentButton.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onStopMove() {
+                mTitleButton.setVisibility(View.VISIBLE);
+                mContentButton.setVisibility(View.VISIBLE);
+            }
+        });
+
         GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
         gsyVideoOption
                 .setIsTouchWiget(true)
@@ -144,7 +165,7 @@ public class VideoFragment extends Fragment {
                 .setVideoAllCallBack(new GSYSampleCallBack() {
                     @Override
                     public void onPrepared(String url, Object... objects) {
-
+                        Log.d(TAG, "url 为"+Message.getVideoUrl()+" 缓冲进度为"+mVideoPlayer.getGSYVideoManager().getBufferedPercentage());
                         super.onPrepared(url, objects);
                         //开始播放了才能旋转和全屏
 //                        orientationUtils.setEnable(mVideoPlayer.isRotateWithSystem());

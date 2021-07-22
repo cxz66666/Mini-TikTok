@@ -32,24 +32,41 @@
             android:layout_height="match_parent" />
 
     </RelativeLayout>
-
     <LinearLayout
-        android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="#99000000"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        >
         <TextView
             android:id="@+id/current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:text="00:00"
+            android:layout_marginEnd="40dp"
+            android:textSize="23sp"
             android:textColor="#ffffff" />
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="00:00"
+            android:textSize="23sp"
+            android:textColor="@color/color_text_darker" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/exo_black_opacity_70"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <SeekBar
             android:id="@+id/progress"
@@ -59,21 +76,10 @@
             android:layout_weight="1.0"
             android:background="@null"
             android:max="100"
-            android:maxHeight="4dp"
-            android:minHeight="3dp"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:maxHeight="3dp"
+            android:minHeight="2dp"
             android:progressDrawable="@drawable/video_player_seek_progress"
             android:thumb="@drawable/video_seek_thumb" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:text="00:00"
-            android:textColor="#ffffff" />
-
 
     </LinearLayout>
 
@@ -81,7 +87,7 @@
         android:id="@+id/bottom_progressbar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="2.5dp"
+        android:layout_height="1.5dp"
         android:layout_marginBottom="2dp"
         android:layout_alignParentBottom="true"
         android:max="100"

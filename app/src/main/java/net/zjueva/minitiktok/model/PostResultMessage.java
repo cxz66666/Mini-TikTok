@@ -61,7 +61,7 @@ public class PostResultMessage implements Parcelable {
 
 
     public String getTitle(){
-        return studentId;
+        return studentId+" "+userName;
     }
 
     public String getVideoUrl() {
