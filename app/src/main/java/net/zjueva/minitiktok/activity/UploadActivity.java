@@ -3,6 +3,7 @@ package net.zjueva.minitiktok.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.Image;
@@ -60,6 +61,8 @@ public class UploadActivity extends AppCompatActivity {
 
     private IApi api;
 
+    private SharedPreferences login_info;
+
     private static final String TAG = "UPLOADACTIVITY";
 
 
@@ -77,6 +80,8 @@ public class UploadActivity extends AppCompatActivity {
         commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
 
         editText = (EditText) findViewById(R.id.share_text);
+
+        login_info = getSharedPreferences(Constant.login_status_sp, MODE_PRIVATE);
 
         initButton();
         initIcon();
@@ -210,7 +215,15 @@ public class UploadActivity extends AppCompatActivity {
     private void initButton() {
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
-            uploadVideo(leftVideoThumbnail);
+            new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadVideo(leftVideoThumbnail);
+                        }
+                    }
+            ).start();
+            // uploadVideo(leftVideoThumbnail);
             // TODO: 选择cover_image（暂时不做）
 
             Intent intent = new Intent(UploadActivity.this, MainActivity.class);
@@ -219,9 +232,10 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void uploadVideo(Bitmap coverImageBitmap) {
-        // TODO: 上传的studentid和username哪里来
-        String userName = "无敌dzp";
-        String studentId = "3180100000";
+        String userName = login_info.getString("user_name", "无敌dzp");
+        String studentId = login_info.getString("student_id", "3180100000");
+        Log.d(TAG, "user_name: " + userName);
+        Log.d(TAG, "student_id: " + studentId);
         shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
 
@@ -233,6 +247,34 @@ public class UploadActivity extends AppCompatActivity {
                                                 uploadVideoInfo.getVideo(),
                                                 uploadVideoInfo.getToken());
 
+        try {
+            Call<VideoUploadResponse> uploadCall = api.submitVideo(uploadVideoInfo.getStudentId(),
+                    uploadVideoInfo.getUserName(),
+                    "",
+                    uploadVideoInfo.getCoverImage(),
+                    uploadVideoInfo.getVideo(),
+                    uploadVideoInfo.getToken());
+            Response<VideoUploadResponse> uploadResponse = uploadCall.execute();
+            Log.d(TAG, "finish execute time: " + Long.toString(System.currentTimeMillis()));
+            if(uploadResponse.isSuccessful()) {
+                // TODO: 停止动画，跳转回去
+
+                toastOnUiThread("上传成功");
+                Log.d(TAG, uploadResponse.message());
+                Log.d(TAG, "jump time: " + Long.toString(System.currentTimeMillis()));
+                Intent intent = new Intent(UploadActivity.this, MainActivity.class);
+                startActivity(intent);
+
+            }
+            else {
+                // TODO: 停止动画
+            }
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
         response.enqueue(new Callback<VideoUploadResponse>() {
             @Override
             public void onResponse(Call<VideoUploadResponse> call, Response<VideoUploadResponse> response) {
@@ -262,13 +304,24 @@ public class UploadActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onFailure(Call<VideoUploadResponse> call, Throwable t) {
                 Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
+        */
+    }
 
+    void toastOnUiThread(String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "toast time: " + Long.toString(System.currentTimeMillis()));
+                Toast.makeText(UploadActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private UploadVideoInfo composeVideoBody(String userName, String studentId, String videoPath, Bitmap coverImageBitmap) {
