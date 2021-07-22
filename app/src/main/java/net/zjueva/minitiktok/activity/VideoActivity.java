@@ -63,7 +63,7 @@ import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class VideoActivity extends AppCompatActivity {
+public class VideoActivity extends BaseActivity {
 
     private int CAMERA_AUDIO_PERMISSION = 1001;
     private int AUDIO_PERMISSION = 1;

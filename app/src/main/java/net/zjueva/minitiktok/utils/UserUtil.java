@@ -61,7 +61,7 @@ public class UserUtil {
             Log.d(TAG, user.getStudentId() + " " + user.getUserName() + " " + user.getPassword());
         }
 
-        return true;
+        return false;
     }
 
     public static boolean loginSuccess(String studentId, String password, List<RegisterUserData>data) {

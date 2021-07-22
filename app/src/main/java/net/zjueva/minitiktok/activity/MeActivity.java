@@ -19,7 +19,7 @@ import net.zjueva.minitiktok.model.PostResultMessage;
 import net.zjueva.minitiktok.utils.Constant;
 import net.zjueva.minitiktok.utils.UserUtil;
 
-public class MeActivity extends AppCompatActivity implements PersonInfoFragment.IOnMessageClick{
+public class MeActivity extends BaseActivity implements PersonInfoFragment.IOnMessageClick{
 
     private Button meLoginButton;
     private Button meRegisterButton;
@@ -89,24 +89,23 @@ public class MeActivity extends AppCompatActivity implements PersonInfoFragment.
     }
 
     private void initButton() {
+        meLogoutButton.setVisibility(View.GONE); // 这个button是没有用的
         if(login_status) {
-            // meLogoutButton.setAlpha(1f);
-            meLoginButton.setAlpha(0f);
-            meRegisterButton.setAlpha(0f);
+            meLoginButton.setVisibility(View.GONE);
+            meRegisterButton.setVisibility(View.GONE);
         }
         else {
-            // meLogoutButton.setAlpha(0f);
-            meLoginButton.setAlpha(1f);
-            meRegisterButton.setAlpha(1f);
+            meLoginButton.setVisibility(View.VISIBLE);
+            meRegisterButton.setVisibility(View.VISIBLE);
         }
 
+        /*
         meLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                meLogoutButton.setAlpha(0f);
-                meLoginButton.setAlpha(1f);
-                meRegisterButton.setAlpha(1f);
+                meLoginButton.setVisibility(View.VISIBLE);
+                meRegisterButton.setVisibility(View.VISIBLE);
 
                 login_info_editor.putString("student_id", null);
                 login_info_editor.putString("user_name", null);
@@ -119,7 +118,7 @@ public class MeActivity extends AppCompatActivity implements PersonInfoFragment.
                         .commit();
 
             }
-        });
+        });*/
 
         meLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,15 +140,14 @@ public class MeActivity extends AppCompatActivity implements PersonInfoFragment.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String result = data.getExtras().getString("result");
+        // String result = data.getExtras().getString("result");
         initView();
-        Log.d(TAG, result);
+        // Log.d(TAG, result);
     }
 
     public void onClick(String text) {
-        // meLogoutButton.setAlpha(0f);
-        meLoginButton.setAlpha(1f);
-        meRegisterButton.setAlpha(1f);
+        meLoginButton.setVisibility(View.VISIBLE);
+        meRegisterButton.setVisibility(View.VISIBLE);
 
         login_info_editor.putString("student_id", null);
         login_info_editor.putString("user_name", null);

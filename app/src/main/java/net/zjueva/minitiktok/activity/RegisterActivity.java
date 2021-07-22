@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static net.zjueva.minitiktok.utils.UserUtil.getEditString;
 import static net.zjueva.minitiktok.utils.UserUtil.userInList;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
 
     EditText userNameEditText;

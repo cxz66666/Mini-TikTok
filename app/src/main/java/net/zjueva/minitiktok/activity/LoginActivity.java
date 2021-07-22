@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static net.zjueva.minitiktok.utils.UserUtil.getEditString;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText studentIdEditText;
     private EditText passwordEditText;
@@ -64,7 +64,9 @@ public class LoginActivity extends AppCompatActivity {
         cancelLoginImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(LoginActivity.this, MeActivity.class);
+                intent.putExtra("result", "abort");
+                startActivity(intent);
             }
         });
     }

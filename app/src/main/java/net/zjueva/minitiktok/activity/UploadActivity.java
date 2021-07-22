@@ -45,7 +45,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class UploadActivity extends AppCompatActivity {
+public class UploadActivity extends BaseActivity {
 
     private String mp4Path = "";
     private String shareText = "";
