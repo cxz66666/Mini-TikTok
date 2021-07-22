@@ -125,6 +125,7 @@ public class VideoFragment extends Fragment {
         orientationUtils = new OrientationUtils(getActivity(), mVideoPlayer);
         orientationUtils.setEnable(false);
         mVideoPlayer.loadCoverImage(Message.getImageUrl(),R.drawable.error);
+
         GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
         gsyVideoOption
                 .setIsTouchWiget(true)
@@ -199,8 +200,7 @@ public class VideoFragment extends Fragment {
                     }
                 })
                 .build(mVideoPlayer);
-
-        mLikeLayout.setLikeLayoutInterface(new LikeLayout.LikeLayoutInterface() {
+             mLikeLayout.setLikeLayoutInterface(new LikeLayout.LikeLayoutInterface() {
             @Override
             public void onLikeListener() {
                 if(!isLike){
