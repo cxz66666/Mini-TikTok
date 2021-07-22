@@ -196,6 +196,7 @@ public class VideoActivity extends AppCompatActivity {
 
                     lottieStartRecordingView.setProgress(0.28f);
                     lottieStartRecordingView.playAnimation();
+                    recordVideo();
                     recording = true;
 
                     timerTextView.setAlpha(1f);
@@ -231,6 +232,7 @@ public class VideoActivity extends AppCompatActivity {
                 }, 700);
                 Intent intent = new Intent(VideoActivity.this, UploadActivity.class);
                 intent.putExtra("video_path", mp4Path);
+                Log.d(TAG, mp4Path);
                 startActivity(intent);
             }
         });
@@ -370,15 +372,6 @@ public class VideoActivity extends AppCompatActivity {
 
         // Camera会自己释放，不用进一步处理
 
-
-
-        // lottieStartRecordingView.reverseAnimationSpeed();
-        // lottieStartRecordingView.playAnimation();
-
-        // playRecordButtonAnimation(true);
-        // lottieStartRecordingView.setProgress(1f);
-        Log.d(TAG, ""+lottieStartRecordingView.getProgress());
-        // lottieStartRecordingView.setRepeatCount(0);
         Log.d(TAG, ""+lottieStartRecordingView.getProgress());;
 
 
