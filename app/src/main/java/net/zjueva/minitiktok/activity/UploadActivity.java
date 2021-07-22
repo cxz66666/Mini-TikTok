@@ -2,6 +2,7 @@ package net.zjueva.minitiktok.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.model.UploadVideoInfo;
@@ -50,9 +53,10 @@ public class UploadActivity extends AppCompatActivity {
     private ImageView leftVideoPreview;
     private ImageView rightVideoPreview;
     private ImageView onlyVideoPreview;
-
     private ImageView backIcon;
     private ImageView cancelIcon;
+
+    private LottieAnimationView loadingLottieAnimationView;
 
     private Bitmap leftVideoThumbnail;
     private Bitmap rightVideoThumbnail;
@@ -80,6 +84,8 @@ public class UploadActivity extends AppCompatActivity {
         commitUploadButton = (Button) findViewById(R.id.video_commit_upload);
 
         editText = (EditText) findViewById(R.id.share_text);
+
+        loadingLottieAnimationView = findViewById(R.id.upload_loading);
 
         login_info = getSharedPreferences(Constant.login_status_sp, MODE_PRIVATE);
 
@@ -216,29 +222,53 @@ public class UploadActivity extends AppCompatActivity {
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
             new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            uploadVideo(leftVideoThumbnail);
-                        }
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        uploadVideo(leftVideoThumbnail);
                     }
+                }
             ).start();
             // uploadVideo(leftVideoThumbnail);
             // TODO: 选择cover_image（暂时不做）
 
-            Intent intent = new Intent(UploadActivity.this, MainActivity.class);
-            startActivity(intent);
+            // Intent intent = new Intent(UploadActivity.this, MainActivity.class);
+            // startActivity(intent);
         });
     }
 
+    private void loadAnimation(int hide) {
+        float start = hide == 1 ? 1.0f : 0.0f;
+        float end = hide == 1 ? 0.0f : 1.0f;
+        new Handler(getMainLooper()).post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ObjectAnimator lottieAnimator = ObjectAnimator.ofFloat(loadingLottieAnimationView,
+                                "alpha", start, end);
+                        lottieAnimator.setDuration(0);
+                        lottieAnimator.setRepeatCount(0);
+                        lottieAnimator.start();
+
+                        if(hide == 0) {
+                            loadingLottieAnimationView.setProgress(0f);
+                            loadingLottieAnimationView.playAnimation();
+                        }
+                        else loadingLottieAnimationView.pauseAnimation();
+                    }
+                }
+        );
+    }
+
     private void uploadVideo(Bitmap coverImageBitmap) {
+        loadAnimation(0);
+
         String userName = login_info.getString("user_name", "无敌dzp");
         String studentId = login_info.getString("student_id", "3180100000");
         Log.d(TAG, "user_name: " + userName);
         Log.d(TAG, "student_id: " + studentId);
         shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
-
 
         Call<VideoUploadResponse> response = api.submitVideo(uploadVideoInfo.getStudentId(),
                                                 uploadVideoInfo.getUserName(),
@@ -254,6 +284,7 @@ public class UploadActivity extends AppCompatActivity {
                     uploadVideoInfo.getCoverImage(),
                     uploadVideoInfo.getVideo(),
                     uploadVideoInfo.getToken());
+            Log.d(TAG, "start execute time: " + Long.toString(System.currentTimeMillis()));
             Response<VideoUploadResponse> uploadResponse = uploadCall.execute();
             Log.d(TAG, "finish execute time: " + Long.toString(System.currentTimeMillis()));
             if(uploadResponse.isSuccessful()) {
@@ -262,12 +293,15 @@ public class UploadActivity extends AppCompatActivity {
                 toastOnUiThread("上传成功");
                 Log.d(TAG, uploadResponse.message());
                 Log.d(TAG, "jump time: " + Long.toString(System.currentTimeMillis()));
+
                 Intent intent = new Intent(UploadActivity.this, MainActivity.class);
-                startActivity(intent);
+                // Thread.sleep(1000);
+                delayedExecuteIntent(intent, 700);
 
             }
             else {
                 // TODO: 停止动画
+                loadAnimation(1);
             }
 
         } catch(IOException e) {
@@ -322,6 +356,19 @@ public class UploadActivity extends AppCompatActivity {
                 Toast.makeText(UploadActivity.this, text, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    void delayedExecuteIntent(Intent intent, int millisecond) {
+        new Handler(getMainLooper()).postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "start jump at: " + System.currentTimeMillis());
+                        loadAnimation(1);
+                        startActivity(intent);
+                    }
+                }, millisecond
+        );
     }
 
     private UploadVideoInfo composeVideoBody(String userName, String studentId, String videoPath, Bitmap coverImageBitmap) {
