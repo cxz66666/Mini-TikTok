@@ -20,6 +20,14 @@ import retrofit2.Response;
 public class UserUtil {
     private static String TAG = "USERUTIL";
 
+    public static String getUserName(String studentId, List<RegisterUserData>data) {
+        // 此时已经保证在里面了
+        for(RegisterUserData userData: data) {
+            if(studentId.equals(userData.getStudentId())) return userData.getUserName();
+        }
+        return null;
+    }
+
     public static List<RegisterUserData> getUserList(IApi api) {
         List<RegisterUserData> userDataList = new ArrayList<>();
         try{

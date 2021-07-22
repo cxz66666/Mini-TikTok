@@ -8,4 +8,5 @@ public class Constant {
     public static final String base_url = "https://api-android-camp.bytedance.com/zju/invoke/";
     public static final String token = "WkpVLWJ5dGVkYW5jZS1hbmRyb2lk";
     public static final String system_uuid = "44b7a28a-7e1f-4e0e-b32a-9a7647be725c";
+    public static final String login_status_sp = "login_sp";
 }

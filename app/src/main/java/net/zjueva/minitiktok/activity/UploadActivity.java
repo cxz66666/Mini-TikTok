@@ -240,7 +240,7 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    // TODO: 上传成功的延迟显示bug还没修复
+                    // TODO: 上传成功的延迟显示bug还没修复（感觉要改成同步的，但是这样子体验很差）
                     VideoUploadResponse body = response.body();
                     Log.d(TAG, "success: " + body.success);
 

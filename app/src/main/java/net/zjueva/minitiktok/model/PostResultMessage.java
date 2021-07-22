@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class PostResultMessage implements Parcelable {
+
     @SerializedName("student_id")
     String studentId;
     @SerializedName("user_name")
@@ -24,6 +25,23 @@ public class PostResultMessage implements Parcelable {
     String createdAt;
     @SerializedName("updatedAt")
     String updatedAt;
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public int getImage_w() {
         return image_w;
     }

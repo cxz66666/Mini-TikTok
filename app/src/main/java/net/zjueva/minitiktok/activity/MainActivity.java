@@ -74,9 +74,9 @@ public class MainActivity extends BaseActivity {
         btn_me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, MeActivity.class);
                 startActivity(intent);
-                // TODO: 加上“我的”界面
+                // TODO: 完善“我的”界面
             }
         });
     }
