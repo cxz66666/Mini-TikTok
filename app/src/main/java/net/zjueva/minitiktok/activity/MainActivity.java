@@ -16,11 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.model.VideoOptionModel;
+
 import net.zjueva.minitiktok.R;
 
 import net.zjueva.minitiktok.fragment.HomeFragment;
 import net.zjueva.minitiktok.fragment.TikTokListFragment;
 import  net.zjueva.minitiktok.utils.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
 public class MainActivity extends BaseActivity {
@@ -42,6 +50,14 @@ public class MainActivity extends BaseActivity {
         checkAPPPermission(REQUEST_CODE);
         bindButtonListener();
         updateFragment(HomeFragment.newInstance(),Constant.home_id);
+
+
+
+        List<VideoOptionModel> list = new ArrayList<>();
+        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1));
+        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1));
+
+        GSYVideoManager.instance().setOptionModelList(list);
     }
 
     //设置按钮的监听事件

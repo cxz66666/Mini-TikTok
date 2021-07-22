@@ -15,6 +15,7 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.adapter.HomePageAdapter;
+import net.zjueva.minitiktok.model.HomeFragmentLab;
 import net.zjueva.minitiktok.model.PostResultMessageLab;
 
 public class HomeFragment extends Fragment {
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment {
         PostResultMessageLab.getData(getActivity(), homePageAdapter);
         mViewPager2.setAdapter(homePageAdapter);
         mViewPager2.setOffscreenPageLimit(1);
+        HomeFragmentLab.setViewPager2(mViewPager2);
+
     }
 
     @Override
@@ -70,5 +73,6 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
         Log.d(TAG,"home fragment on destroy");
         GSYVideoManager.releaseAllVideos();
+        HomeFragmentLab.removeViewPager2();
     }
 }

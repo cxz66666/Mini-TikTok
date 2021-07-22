@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.zjueva.minitiktok.R;
+import net.zjueva.minitiktok.model.HomeFragmentLab;
 import net.zjueva.minitiktok.model.PersonPhotoModel;
 import net.zjueva.minitiktok.model.PersonPhotoModelLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
@@ -153,6 +154,12 @@ public class PersonInfoFragment extends Fragment {
         public int getItemCount() {
             return mPersonPhotoModels.size();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HomeFragmentLab.setDisable();
     }
 
     @Override

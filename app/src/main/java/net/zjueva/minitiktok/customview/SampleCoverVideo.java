@@ -226,8 +226,9 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
         super.changeUiToPlayingShow();
         if (!byStartedClick) {
             setViewShowState(mBottomContainer, INVISIBLE);
-            setViewShowState(mStartButton, INVISIBLE);
         }
+        setViewShowState(mStartButton, INVISIBLE);
+
     }
 
     @Override

@@ -21,6 +21,9 @@ public class PostResultMessageLab {
     private static List<PostResultMessage> mItems;
     private static final String TAG = "PostResultMessageLab";
 
+    private static List<GetResultMessageCallback>cbLists;
+
+
     public static void getData(Context context, GetResultMessageCallback<PostResultMessage>cb){
         if(sPostResultMessageLab==null){
             sPostResultMessageLab=new PostResultMessageLab(context);
@@ -31,6 +34,7 @@ public class PostResultMessageLab {
     }
     private PostResultMessageLab(Context context){
         mItems=new ArrayList<>();
+        cbLists=new ArrayList<>();
     }
 
     public static void updateData(Context context,GetResultMessageCallback<PostResultMessage>cb){
