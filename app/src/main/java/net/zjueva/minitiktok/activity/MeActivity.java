@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.fragment.PersonInfoFragment;
@@ -18,11 +19,12 @@ import net.zjueva.minitiktok.model.PostResultMessage;
 import net.zjueva.minitiktok.utils.Constant;
 import net.zjueva.minitiktok.utils.UserUtil;
 
-public class MeActivity extends AppCompatActivity {
+public class MeActivity extends AppCompatActivity implements PersonInfoFragment.IOnMessageClick{
 
     private Button meLoginButton;
     private Button meRegisterButton;
     private Button meLogoutButton;
+    private ImageView meCancelImageView;
     SharedPreferences login_info; // 包含student_id, user_name, login_status
     boolean login_status;
     SharedPreferences.Editor login_info_editor;
@@ -42,6 +44,7 @@ public class MeActivity extends AppCompatActivity {
         meLoginButton = findViewById(R.id.me_login);
         meLogoutButton = findViewById(R.id.me_logout);
         meRegisterButton = findViewById(R.id.me_register);
+        meCancelImageView = findViewById(R.id.cancel_me);
         initView();
     }
 
@@ -54,6 +57,16 @@ public class MeActivity extends AppCompatActivity {
 
         if(login_status) initFragment();
         initButton();
+        initImageView();
+    }
+
+    private void initImageView() {
+        meCancelImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -77,12 +90,12 @@ public class MeActivity extends AppCompatActivity {
 
     private void initButton() {
         if(login_status) {
-            meLogoutButton.setAlpha(1f);
+            // meLogoutButton.setAlpha(1f);
             meLoginButton.setAlpha(0f);
             meRegisterButton.setAlpha(0f);
         }
         else {
-            meLogoutButton.setAlpha(0f);
+            // meLogoutButton.setAlpha(0f);
             meLoginButton.setAlpha(1f);
             meRegisterButton.setAlpha(1f);
         }
@@ -131,5 +144,21 @@ public class MeActivity extends AppCompatActivity {
         String result = data.getExtras().getString("result");
         initView();
         Log.d(TAG, result);
+    }
+
+    public void onClick(String text) {
+        // meLogoutButton.setAlpha(0f);
+        meLoginButton.setAlpha(1f);
+        meRegisterButton.setAlpha(1f);
+
+        login_info_editor.putString("student_id", null);
+        login_info_editor.putString("user_name", null);
+        login_info_editor.putBoolean("login_status", false);
+        login_info_editor.commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(personInfoFragment)
+                .commit();
     }
 }

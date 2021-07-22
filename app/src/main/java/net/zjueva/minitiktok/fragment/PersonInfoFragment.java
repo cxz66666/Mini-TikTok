@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +23,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.util.concurrent.internal.InternalFutureFailureAccess;
+
 import net.zjueva.minitiktok.R;
+import net.zjueva.minitiktok.activity.MeActivity;
 import net.zjueva.minitiktok.model.PersonPhotoModel;
 import net.zjueva.minitiktok.model.PersonPhotoModelLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
@@ -44,6 +48,9 @@ public class PersonInfoFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     private ThumbnailDownloader<PhotoHolder>mThumbnailDownloader;
+
+    private IOnMessageClick listener;
+
 
     //创建新Fragment必须使用该方法
     public static PersonInfoFragment newInstance(PostResultMessage msg) {
@@ -83,19 +90,48 @@ public class PersonInfoFragment extends Fragment {
 //        CircleImageView circleImageView=v.findViewById(R.id.avatar_image);
 //        circleImageView.bringToFront();//把头像放到前面
 
-        SharedPreferences login_info = this.getActivity().getSharedPreferences(Constant.login_status_sp, Context.MODE_PRIVATE);
-        TextView studentIdTextView = v.findViewById(R.id.dy_number);
-        TextView userNameTextView = v.findViewById(R.id.name);
-        userNameTextView.setText(login_info.getString("user_name", "永远的神"));
-        studentIdTextView.setText("抖音号：" + login_info.getString("student_id", "uzi_yyds"));
-        Log.d(TAG, "user_name: "+login_info.getString("user_name", "123"));
-        Log.d(TAG, "student_id" + login_info.getString("student_id", "1"));
+        setupView(v);
 
         mRecyclerView=v.findViewById(R.id.recycle_view_photo);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));//设置layoutmanager
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));//设置decoration
         setupAdapter();//设置adapter
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (IOnMessageClick)context;
+        }catch(ClassCastException e) {
+            throw new ClassCastException("!!");
+        }
+    }
+
+
+    private void setupView(View v) {
+        SharedPreferences login_info = this.getActivity().getSharedPreferences(Constant.login_status_sp, Context.MODE_PRIVATE);
+        TextView studentIdTextView = v.findViewById(R.id.dy_number);
+        TextView userNameTextView = v.findViewById(R.id.name);
+        Button personInfoFollowButton = v.findViewById(R.id.person_info_follow);
+
+        Log.d(TAG, "thisactivity: " + this.getActivity().toString());
+        Log.d(TAG, "meactivity: " + MeActivity.class);
+        if(this.getActivity().getClass().equals(MeActivity.class)) {
+            userNameTextView.setText(login_info.getString("user_name", "永远的神"));
+            studentIdTextView.setText("抖音号：" + login_info.getString("student_id", "uzi_yyds"));
+            personInfoFollowButton.setText("登出");
+            personInfoFollowButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick("logout");
+                }
+            });
+
+            Log.d(TAG, "user_name: "+login_info.getString("user_name", "123"));
+            Log.d(TAG, "student_id" + login_info.getString("student_id", "1"));
+        }
     }
 
     private void setupAdapter(){
@@ -160,5 +196,9 @@ public class PersonInfoFragment extends Fragment {
         super.onDestroyView();
         mThumbnailDownloader.quit();
         Log.d(TAG,"background thread destroyed");
+    }
+
+    public interface IOnMessageClick {
+        void onClick(String text);
     }
 }
