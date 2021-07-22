@@ -52,12 +52,76 @@ public class MainActivity extends BaseActivity {
         updateFragment(HomeFragment.newInstance(),Constant.home_id);
 
 
+//
+//        List<VideoOptionModel> list = new ArrayList<>();
+//        //关键帧优化
+////        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1));
+//
+//
+//        //探测大小
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 500));
+//        //无线读
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "infbuf", 1));
+//
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 2));
+//        // 跳过循环滤波
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48));
+//        //最大探测
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT,"analyzemaxduration",100));
+//        //立即清理数据包
+//       list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1));
+//        //网络不好就丢包
+//       list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 1));
+//
+//        //100帧开始播放
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "min-frames", 50));
+//        //预缓冲
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER,"packet-buffering",0));
+//
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER,"find_stream_info", 0));
+//
+//        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzedmaxduration", 100));
+//        GSYVideoManager.instance().setOptionModelList(list);
+
+
 
         List<VideoOptionModel> list = new ArrayList<>();
-        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1));
-        list.add(new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1));
+        VideoOptionModel videoOptionMode01 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "fast", 1);//不额外优化
+        list.add(videoOptionMode01);
+        VideoOptionModel videoOptionMode02 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 200);//10240
+        list.add(videoOptionMode02);
+        VideoOptionModel videoOptionMode03 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1);
+        list.add(videoOptionMode03);
+//pause output until enough packets have been read after stalling
+        VideoOptionModel videoOptionMode04 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);//是否开启缓冲
+        list.add(videoOptionMode04);
+//drop frames when cpu is too slow：0-120
+        VideoOptionModel videoOptionMode05 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 1);//丢帧,太卡可以尝试丢帧
+        list.add(videoOptionMode05);
+//automatically start playing on prepared
+        VideoOptionModel videoOptionMode06 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", 1);
+        list.add(videoOptionMode06);
+        VideoOptionModel videoOptionMode07 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);//默认值48
+        list.add(videoOptionMode07);
+//max buffer size should be pre-read：默认为15*1024*1024
+        VideoOptionModel videoOptionMode11 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", 0);//最大缓存数
+        list.add(videoOptionMode11);
+        VideoOptionModel videoOptionMode12 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "min-frames", 2);//默认最小帧数2
+        list.add(videoOptionMode12);
+        VideoOptionModel videoOptionMode13 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", 30);//最大缓存时长
+        list.add(videoOptionMode13);
+//input buffer:don't limit the input buffer size (useful with realtime streams)
+        VideoOptionModel videoOptionMode14 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 1);//是否限制输入缓存数
+        list.add(videoOptionMode14);
+        VideoOptionModel videoOptionMode15 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "fflags", "nobuffer");
+        list.add(videoOptionMode15);
+        VideoOptionModel videoOptionMode16 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "rtsp_transport", "tcp");//tcp传输数据
+        list.add(videoOptionMode16);
+        VideoOptionModel videoOptionMode17 = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzedmaxduration", 100);//分析码流时长:默认1024*1000
+        list.add(videoOptionMode17);
 
         GSYVideoManager.instance().setOptionModelList(list);
+
     }
 
     //设置按钮的监听事件

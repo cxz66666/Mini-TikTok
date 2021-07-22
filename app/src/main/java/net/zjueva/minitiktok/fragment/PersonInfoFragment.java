@@ -103,10 +103,13 @@ public class PersonInfoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        if(!this.getActivity().getClass().equals(MeActivity.class)){
+            return;
+        }
         try {
             listener = (IOnMessageClick)context;
         }catch(ClassCastException e) {
+
             throw new ClassCastException("!!");
         }
     }

@@ -25,7 +25,7 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
 import net.zjueva.minitiktok.R;
-
+import net.zjueva.minitiktok.mInterface.SeekBarHandler;
 
 
 public class SampleCoverVideo extends StandardGSYVideoPlayer {
@@ -37,6 +37,14 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     int  mCoverOriginId = 0;
 
     int mDefaultRes;
+
+
+    private SeekBarHandler mSeekBarHandler;
+
+    public void setSeekBarHandler(SeekBarHandler seekBarHandler) {
+        mSeekBarHandler = seekBarHandler;
+    }
+
 
     public SampleCoverVideo(Context context, Boolean fullFlag) {
         super(context, fullFlag);
@@ -114,12 +122,7 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     }
 
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        super.onStopTrackingTouch(seekBar);
-        //在停止track的之后直接恢复播放
-        onVideoResume();
-    }
+
 
     @Override
     public void onError(int what, int extra) {
@@ -225,11 +228,17 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     protected void changeUiToNormal() {
         super.changeUiToNormal();
         byStartedClick = false;
+        setViewShowState(mCurrentTimeTextView,INVISIBLE);
+        setViewShowState(mTotalTimeTextView,INVISIBLE);
     }
 
     @Override
     protected void changeUiToPreparingShow() {
         super.changeUiToPreparingShow();
+
+        setViewShowState(mCurrentTimeTextView,INVISIBLE);
+        setViewShowState(mTotalTimeTextView,INVISIBLE);
+
         setViewShowState(mBottomContainer, INVISIBLE);
         setViewShowState(mStartButton, INVISIBLE);
     }
@@ -237,6 +246,9 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     @Override
     protected void changeUiToPlayingBufferingShow() {
         super.changeUiToPlayingBufferingShow();
+
+        setViewShowState(mCurrentTimeTextView,INVISIBLE);
+        setViewShowState(mTotalTimeTextView,INVISIBLE);
 
             setViewShowState(mBottomContainer, INVISIBLE);
             setViewShowState(mStartButton, INVISIBLE);
@@ -246,6 +258,10 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     @Override
     protected void changeUiToPlayingShow() {
         super.changeUiToPlayingShow();
+
+        setViewShowState(mCurrentTimeTextView,INVISIBLE);
+        setViewShowState(mTotalTimeTextView,INVISIBLE);
+
 
         setViewShowState(mBottomContainer, INVISIBLE);
 
@@ -261,11 +277,30 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
         setViewShowState(mBottomProgressBar, VISIBLE);
     }
 
+    //展示时间
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         byStartedClick = true;
+        setViewShowState(mCurrentTimeTextView,VISIBLE);
+        setViewShowState(mTotalTimeTextView,VISIBLE);
+
+        mSeekBarHandler.onStartMove();//隐藏文字
         super.onStartTrackingTouch(seekBar);
     }
+
+    //隐藏时间
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        super.onStopTrackingTouch(seekBar);
+        setViewShowState(mCurrentTimeTextView,VISIBLE);
+        setViewShowState(mTotalTimeTextView,VISIBLE);
+
+        mSeekBarHandler.onStopMove();//展示文字
+        //在停止track的之后直接恢复播放
+        onVideoResume();
+    }
+
+
 
     //双击无法暂停 播放
     @Override

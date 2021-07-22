@@ -7,19 +7,19 @@
             <corners android:radius="1.0dip"/>
         </shape>
     </item>
-    <!--<item android:id="@android:id/secondaryProgress">-->
-        <!--<clip>-->
-            <!--<shape>-->
-                <!--<solid android:color="#ffe0e0e0"/>-->
-                <!--<size android:height="4.0dip"/>-->
-                <!--<corners android:radius="1.0dip"/>-->
-            <!--</shape>-->
-        <!--</clip>-->
-    <!--</item>-->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <solid android:color="#ff0000"/>
+                <size android:height="4.0dip"/>
+                <corners android:radius="1.0dip"/>
+            </shape>
+        </clip>
+    </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="#ffffff"/>
+                <solid android:color="#adb5bd"/>
                 <size android:height="4.0dip"/>
                 <corners android:radius="1.0dip"/>
             </shape>
