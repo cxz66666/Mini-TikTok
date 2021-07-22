@@ -66,5 +66,4 @@ dependencies {
 
     implementation 'com.github.youlookwhat:ByRecyclerView:1.1.6'
     implementation 'com.android.support:percent:28.0.0'
-
 }
