@@ -276,10 +276,12 @@ public class UploadActivity extends AppCompatActivity {
             }
             else {
                 loadAnimation(1);
+                toastOnUiThread("上传失败");
             }
 
         } catch(IOException e) {
             e.printStackTrace();
+            toastOnUiThread("上传失败");
         }
 
         /*

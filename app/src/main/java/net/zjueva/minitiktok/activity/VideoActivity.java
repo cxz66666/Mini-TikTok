@@ -5,16 +5,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.camera2.internal.annotation.CameraExecutor;
 import androidx.camera.core.Camera;
+import androidx.camera.core.CameraControl;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraProvider;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.FocusMeteringAction;
 import androidx.camera.core.ImageCapture;
+import androidx.camera.core.MeteringPoint;
+import androidx.camera.core.MeteringPointFactory;
 import androidx.camera.core.Preview;
 import androidx.camera.core.VideoCapture;
+import androidx.camera.core.ZoomState;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
@@ -23,15 +30,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.icu.number.Scale;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.EventLog;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +88,8 @@ public class VideoActivity extends AppCompatActivity {
     private PreviewView previewView;
     private VideoCapture videoCapture;
     private CameraSelector cameraSelector;
+    private CameraControl cameraControl;
+    private CameraInfo cameraInfo;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ProcessCameraProvider cameraProvider;
     private static final String TAG = "VideoActivity";
@@ -115,7 +132,7 @@ public class VideoActivity extends AppCompatActivity {
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
         lottieStartRecordingView = (LottieAnimationView) findViewById(R.id.start_recording_lottie);
         lottieStartRecordingView.setMinAndMaxFrame(28, 100);
-
+        context = getBaseContext();
 
         finishRecording = false;
 
@@ -138,6 +155,7 @@ public class VideoActivity extends AppCompatActivity {
              */
         }
         openCameraPreview();
+        initPreviewView();
     }
 
     @Override
@@ -190,7 +208,6 @@ public class VideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!recording) {
-
                     lottieStartRecordingView.setProgress(0.28f);
                     lottieStartRecordingView.playAnimation();
                     recordVideo();
@@ -269,6 +286,85 @@ public class VideoActivity extends AppCompatActivity {
 */
     }
 
+
+
+    private void initPreviewView() {
+
+        ScaleGestureDetector.SimpleOnScaleGestureListener listener = new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                Log.d(TAG, "onScale");
+                float currentZoomRatio = 1f;
+                float delta = 0f;
+                try {
+                    LiveData<ZoomState> zoomState = cameraInfo.getZoomState();
+                    ZoomState zoomStateValue = zoomState.getValue();
+                    currentZoomRatio = zoomStateValue.getZoomRatio();
+                    delta = detector.getScaleFactor();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    cameraControl.setZoomRatio(currentZoomRatio * delta);
+                }
+                return super.onScale(detector);
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return super.onScaleBegin(detector);
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+            }
+        };
+
+
+
+        ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(context, listener);
+
+        previewView.setOnTouchListener( (View v, MotionEvent event) -> {
+            scaleGestureDetector.onTouchEvent(event);
+            return v.performClick();
+        });
+
+        previewView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scaleGestureDetector.onTouchEvent(event);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "ACTION_DOWN");
+                    showTapView(event.getX(), event.getY());
+                    MeteringPointFactory factory = previewView.getMeteringPointFactory();
+                    MeteringPoint point = factory.createPoint(event.getX(), event.getY());
+                    FocusMeteringAction action = new FocusMeteringAction.Builder(point).build();
+                    cameraControl.startFocusAndMetering(action);
+
+                    return true;
+
+                } else {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        Log.d(TAG, "ACTION_UP");
+                        return true;
+                    } else return false;
+                }
+            }
+        });
+    }
+
+    private void showTapView(float x, float y) {
+        Log.d(TAG, "" + x + " " + y);
+        PopupWindow popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.focus_square);
+        Log.d(TAG, "" + imageView.getWidth() + " " + imageView.getHeight());
+        popupWindow.setContentView(imageView);
+        popupWindow.showAtLocation(previewView, Gravity.NO_GRAVITY, (int)(x > 100 ? x-100 : 0), (int)(y > 80 ? y-80 : 0));
+        //popupWindow.showAsDropDown(previewView, (int)x, (int)y);
+        previewView.postDelayed(popupWindow::dismiss, 300);
+    }
+
     private void setLottieAnimation(int hide) {
         float start = hide == 1 ? 1.0f : 0.0f;
         float end = hide == 1 ? 0.0f : 1.0f;
@@ -299,6 +395,9 @@ public class VideoActivity extends AppCompatActivity {
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, videoCapture);
+        cameraControl = camera.getCameraControl();
+        cameraInfo = camera.getCameraInfo();
+        initPreviewView();
     }
 
 
@@ -315,7 +414,9 @@ public class VideoActivity extends AppCompatActivity {
                         .build();
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
                 videoCapture = new VideoCapture.Builder().build();
-                cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, videoCapture, preview);
+                Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, videoCapture, preview);
+                cameraControl = camera.getCameraControl();
+                cameraInfo = camera.getCameraInfo();
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -343,7 +444,6 @@ public class VideoActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(VideoActivity.this, "视频已保存", Toast.LENGTH_SHORT).show();
-                                VideoActivity.this.finish();
                             }
                         });
                     }
