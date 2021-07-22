@@ -10,9 +10,11 @@
     android:paddingEnd="16dp">
 
     <View
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/icon_live" />
+        android:id="@+id/icon_refresh"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/icon_refresh" />
+
 
     <com.google.android.material.tabs.TabLayout android:id="@+id/tab_layout"
         android:layout_width="0dp"
@@ -67,7 +69,8 @@
     <!--</LinearLayout>-->
 
     <View
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/icon_search" />
+        android:id="@+id/icon_to_top"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/icon_to_top" />
 </LinearLayout>
