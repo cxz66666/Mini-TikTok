@@ -23,6 +23,7 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import net.zjueva.minitiktok.R;
 import net.zjueva.minitiktok.customview.LikeLayout;
 import net.zjueva.minitiktok.customview.SampleCoverVideo;
+import net.zjueva.minitiktok.model.HomeFragmentLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,6 +48,7 @@ public class VideoFragment extends Fragment {
     private View mIconMessage;
     private View mIconShare;
 
+    private boolean isLike;
 
     public static VideoFragment newInstance(PostResultMessage msg) {
 
@@ -68,6 +70,7 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          View v=inflater.inflate(R.layout.fragment_video_main,container,false);
+         isLike=false;//设置不喜欢
          mCurrentPosition=0;
          mVideoPlayer= v.findViewById(R.id.main_player);
          mLikeLayout=v.findViewById(R.id.like_layout);
@@ -93,6 +96,12 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"点击爱心",Toast.LENGTH_SHORT).show();
+                if(!isLike){
+                    mIconHeart.setBackgroundResource(R.drawable.icon_heart_red);
+                } else {
+                  mIconHeart.setBackgroundResource(R.drawable.icon_heart);
+                }
+                isLike=!isLike;
             }
         });
         mIconMessage.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +125,7 @@ public class VideoFragment extends Fragment {
         orientationUtils = new OrientationUtils(getActivity(), mVideoPlayer);
         orientationUtils.setEnable(false);
         mVideoPlayer.loadCoverImage(Message.getImageUrl(),R.drawable.error);
+
         GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
         gsyVideoOption
                 .setIsTouchWiget(true)
@@ -137,7 +147,7 @@ public class VideoFragment extends Fragment {
 
                         super.onPrepared(url, objects);
                         //开始播放了才能旋转和全屏
-                        orientationUtils.setEnable(mVideoPlayer.isRotateWithSystem());
+//                        orientationUtils.setEnable(mVideoPlayer.isRotateWithSystem());
                         isPlay = true;
 
                         //设置 seek 的临近帧。
@@ -190,10 +200,13 @@ public class VideoFragment extends Fragment {
                     }
                 })
                 .build(mVideoPlayer);
-
-        mLikeLayout.setLikeLayoutInterface(new LikeLayout.LikeLayoutInterface() {
+             mLikeLayout.setLikeLayoutInterface(new LikeLayout.LikeLayoutInterface() {
             @Override
             public void onLikeListener() {
+                if(!isLike){
+                    isLike=true;
+                    mIconHeart.setBackgroundResource(R.drawable.icon_heart_red);
+                }
                 Log.d(TAG,"double click");
             }
 
@@ -215,24 +228,32 @@ public class VideoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(mCurrentPosition>0){
-            Log.d(TAG,"onResume current>0");
-            mVideoPlayer.onVideoResume(true);
-        } else {
-            Log.d(TAG,"onResume current==0");
-            mVideoPlayer.postDelayed(new Runnable() {
+        HomeFragmentLab.setEnable();
+//        if(mCurrentPosition>0){
+//            Log.d(TAG,"onResume current>0");
+//            mVideoPlayer.onVideoResume(false);
+//        } else {
+//            Log.d(TAG,"onResume current==0");
+//            mVideoPlayer.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mVideoPlayer.startPlayLogic();
+//                }
+//            },0);
+//        }
+        mVideoPlayer.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mVideoPlayer.startPlayLogic();
                 }
             },0);
-        }
         Log.d(TAG,"onResume, currentPos is "+mCurrentPosition);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mLikeLayout.onPause();
         mVideoPlayer.onVideoPause();
         mCurrentPosition=mVideoPlayer.getGSYVideoManager().getCurrentPosition();
         Log.d(TAG,"onPause, currentPos is "+mCurrentPosition);

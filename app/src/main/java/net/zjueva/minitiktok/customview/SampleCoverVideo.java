@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,6 +25,7 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 
 import net.zjueva.minitiktok.R;
+
 
 
 public class SampleCoverVideo extends StandardGSYVideoPlayer {
@@ -111,9 +114,28 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     }
 
 
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        super.onStopTrackingTouch(seekBar);
+        //在停止track的之后直接恢复播放
+        onVideoResume();
+    }
+
+    @Override
+    public void onError(int what, int extra) {
+        super.onError(what, extra);
+        new Handler(getContext().getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(),"视频播放出错了，请重试",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     /**
      * 退出window层播放全屏效果
      */
+
     @SuppressWarnings("ResourceType")
     @Override
     protected void clearFullscreenLayout() {
@@ -215,19 +237,20 @@ public class SampleCoverVideo extends StandardGSYVideoPlayer {
     @Override
     protected void changeUiToPlayingBufferingShow() {
         super.changeUiToPlayingBufferingShow();
-        if (!byStartedClick) {
+
             setViewShowState(mBottomContainer, INVISIBLE);
             setViewShowState(mStartButton, INVISIBLE);
-        }
+
     }
 
     @Override
     protected void changeUiToPlayingShow() {
         super.changeUiToPlayingShow();
-        if (!byStartedClick) {
-            setViewShowState(mBottomContainer, INVISIBLE);
-            setViewShowState(mStartButton, INVISIBLE);
-        }
+
+        setViewShowState(mBottomContainer, INVISIBLE);
+
+        setViewShowState(mStartButton, INVISIBLE);
+
     }
 
     @Override

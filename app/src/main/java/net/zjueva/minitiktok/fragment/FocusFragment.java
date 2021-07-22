@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import net.zjueva.minitiktok.R;
+import net.zjueva.minitiktok.model.HomeFragmentLab;
 import net.zjueva.minitiktok.model.PostResultMessage;
 import net.zjueva.minitiktok.utils.Constant;
 
@@ -39,6 +40,12 @@ public class FocusFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_focus, container,false);
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HomeFragmentLab.setDisable();
     }
 
     @Override
