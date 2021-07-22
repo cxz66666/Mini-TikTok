@@ -83,6 +83,7 @@ public class TikTokListAdapter extends  RecyclerView.Adapter<TikTokListAdapter.T
     public class TikTokListViewHolder extends RecyclerView.ViewHolder {
         public ImageView mThumb;
         private TextView mTitle;
+        private TextView mContent;
         public int mPosition;
 
 
@@ -100,7 +101,7 @@ public class TikTokListAdapter extends  RecyclerView.Adapter<TikTokListAdapter.T
                     .placeholder(new ColorDrawable(Color.GRAY))
                     .diskCacheStrategy(DiskCacheStrategy.DATA )
                     .error(R.drawable.icon_error)
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
+//                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(mThumb);
 
@@ -108,11 +109,14 @@ public class TikTokListAdapter extends  RecyclerView.Adapter<TikTokListAdapter.T
                 String next_url=data.get(mPosition+Pre_Num).getImageUrl();
                 Glide.with(mThumb.getContext()).load(next_url).diskCacheStrategy(DiskCacheStrategy.DATA).preload();
             }
+            mTitle.setText(item.getUserName());
+            mContent.setText(item.getTitle());
         }
         public TikTokListViewHolder(@NonNull View itemView) {
             super(itemView);
             mThumb = itemView.findViewById(R.id.iv_thumb);
             mTitle = itemView.findViewById(R.id.tv_title);
+            mContent=itemView.findViewById(R.id.tv_content);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

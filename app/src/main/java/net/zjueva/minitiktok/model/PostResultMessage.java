@@ -23,6 +23,15 @@ public class PostResultMessage implements Parcelable {
     String id;
     @SerializedName("createdAt")
     String createdAt;
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
     @SerializedName("updatedAt")
     String updatedAt;
 

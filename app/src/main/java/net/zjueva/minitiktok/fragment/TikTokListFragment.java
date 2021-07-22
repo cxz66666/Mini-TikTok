@@ -61,7 +61,7 @@ public class TikTokListFragment extends Fragment {
         manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
         mRecyclerView.setLayoutManager(manager);
-        int divider = DimenUtil.dp2px(getContext(),6);
+        int divider = DimenUtil.dp2px(getContext(),4);
         RecyclerView.ItemDecoration gridItemDecoration = new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, RecyclerView parent, @NonNull RecyclerView.State state) {
