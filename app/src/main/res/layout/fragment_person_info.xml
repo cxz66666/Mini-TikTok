@@ -26,6 +26,7 @@
                 app:civ_border_width="4dp"
                 app:civ_border_color="@color/exo_black_opacity_60"/>
             <Button
+                android:id="@+id/person_info_follow"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#f94144"
