@@ -48,7 +48,6 @@ import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-// TODO: 切换前后置摄像头和左上角的返回按钮
 public class VideoActivity extends AppCompatActivity {
 
     private int CAMERA_AUDIO_PERMISSION = 1001;
@@ -82,7 +81,6 @@ public class VideoActivity extends AppCompatActivity {
     private Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
-            // timerDecimalSecond++;
             long currTime = System.currentTimeMillis();
             long timeElapsedMilli = currTime - timerStart;
             Log.d("TIMER", "" + timeElapsedMilli);
@@ -117,7 +115,6 @@ public class VideoActivity extends AppCompatActivity {
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
         lottieStartRecordingView = (LottieAnimationView) findViewById(R.id.start_recording_lottie);
         lottieStartRecordingView.setMinAndMaxFrame(28, 100);
-        // lottieStartRecordingView.setMinAndMaxProgress(0.28f, 1f);
 
 
         finishRecording = false;
@@ -216,7 +213,6 @@ public class VideoActivity extends AppCompatActivity {
     private void initButton(){
         uploadButton.setVisibility(View.GONE);
         cancelButton.setVisibility(View.GONE);
-
         recordButton.setVisibility(View.GONE);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -250,13 +246,12 @@ public class VideoActivity extends AppCompatActivity {
 
             }
         });
-
+/*
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(recording == false) {
                     recording = true;
-                    // recordButton.setText(R.string.end_recording);
                     recordVideo();
                     timerTextView.setAlpha(1f);
 
@@ -271,6 +266,7 @@ public class VideoActivity extends AppCompatActivity {
                 }
             }
         });
+*/
     }
 
     private void setLottieAnimation(int hide) {
@@ -296,7 +292,6 @@ public class VideoActivity extends AppCompatActivity {
                 .build();
 
         int lensFacing = (usingBackCamera == true) ? CameraSelector.LENS_FACING_BACK : CameraSelector.LENS_FACING_FRONT;
-        // TODO: 前置摄像头的检测
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(lensFacing)
                 .build();
@@ -347,8 +342,8 @@ public class VideoActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                // Toast.makeText(VideoActivity.this, "视频已保存", Toast.LENGTH_SHORT).show();
-                                // VideoActivity.this.finish();
+                                Toast.makeText(VideoActivity.this, "视频已保存", Toast.LENGTH_SHORT).show();
+                                VideoActivity.this.finish();
                             }
                         });
                     }
@@ -375,19 +370,13 @@ public class VideoActivity extends AppCompatActivity {
         Log.d(TAG, ""+lottieStartRecordingView.getProgress());;
 
 
-        new Handler(getMainLooper()).postDelayed(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        uploadButton.setVisibility(View.VISIBLE);
-                        cancelButton.setVisibility(View.VISIBLE);
-                        lottieStartRecordingView.setVisibility(View.GONE);
-                        lottieStartRecordingView.setProgress(0.28f);
-                    }
+        new Handler(getMainLooper()).postDelayed(() -> {
+                    uploadButton.setVisibility(View.VISIBLE);
+                    cancelButton.setVisibility(View.VISIBLE);
+                    lottieStartRecordingView.setVisibility(View.GONE);
+                    lottieStartRecordingView.setProgress(0.28f);
                 }, 0
         );
-
-        // recordButton.setVisibility(View.GONE);
     }
 
     private void playRecordButtonAnimation(boolean reverse) {

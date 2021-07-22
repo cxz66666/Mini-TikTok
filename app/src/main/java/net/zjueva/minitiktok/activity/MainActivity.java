@@ -92,7 +92,6 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MeActivity.class);
                 startActivity(intent);
-                // TODO: 完善“我的”界面
             }
         });
     }

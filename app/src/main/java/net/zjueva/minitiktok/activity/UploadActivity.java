@@ -221,43 +221,28 @@ public class UploadActivity extends AppCompatActivity {
     private void initButton() {
         commitUploadButton.setOnClickListener( (View v) -> {
             Log.d(TAG, "commit upload");
-            new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        uploadVideo(leftVideoThumbnail);
-                    }
-                }
-            ).start();
-            // uploadVideo(leftVideoThumbnail);
+            // 返回在upload里面做完了
+            new Thread(() -> { uploadVideo(leftVideoThumbnail); } ).start();
             // TODO: 选择cover_image（暂时不做）
-
-            // Intent intent = new Intent(UploadActivity.this, MainActivity.class);
-            // startActivity(intent);
         });
     }
 
     private void loadAnimation(int hide) {
         float start = hide == 1 ? 1.0f : 0.0f;
         float end = hide == 1 ? 0.0f : 1.0f;
-        new Handler(getMainLooper()).post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        ObjectAnimator lottieAnimator = ObjectAnimator.ofFloat(loadingLottieAnimationView,
-                                "alpha", start, end);
-                        lottieAnimator.setDuration(0);
-                        lottieAnimator.setRepeatCount(0);
-                        lottieAnimator.start();
+        new Handler(getMainLooper()).post( ()-> {
+            ObjectAnimator lottieAnimator = ObjectAnimator.ofFloat(loadingLottieAnimationView,
+                    "alpha", start, end);
+            lottieAnimator.setDuration(0);
+            lottieAnimator.setRepeatCount(0);
+            lottieAnimator.start();
 
-                        if(hide == 0) {
-                            loadingLottieAnimationView.setProgress(0f);
-                            loadingLottieAnimationView.playAnimation();
-                        }
-                        else loadingLottieAnimationView.pauseAnimation();
-                    }
-                }
-        );
+            if(hide == 0) {
+                loadingLottieAnimationView.setProgress(0f);
+                loadingLottieAnimationView.playAnimation();
+            }
+            else loadingLottieAnimationView.pauseAnimation();
+        } );
     }
 
     private void uploadVideo(Bitmap coverImageBitmap) {
@@ -267,15 +252,9 @@ public class UploadActivity extends AppCompatActivity {
         String studentId = login_info.getString("student_id", "3180100000");
         Log.d(TAG, "user_name: " + userName);
         Log.d(TAG, "student_id: " + studentId);
-        shareText = editText.getText().toString(); // TODO: 把分享文字给发送出去（暂时不做）
+        shareText = editText.getText().toString();
+        // TODO: 把分享文字给发送出去（暂时不做），也没有对应的api
         UploadVideoInfo uploadVideoInfo = composeVideoBody(userName, studentId, mp4Path, coverImageBitmap);
-
-        Call<VideoUploadResponse> response = api.submitVideo(uploadVideoInfo.getStudentId(),
-                                                uploadVideoInfo.getUserName(),
-                                                "",
-                                                uploadVideoInfo.getCoverImage(),
-                                                uploadVideoInfo.getVideo(),
-                                                uploadVideoInfo.getToken());
 
         try {
             Call<VideoUploadResponse> uploadCall = api.submitVideo(uploadVideoInfo.getStudentId(),
@@ -288,19 +267,14 @@ public class UploadActivity extends AppCompatActivity {
             Response<VideoUploadResponse> uploadResponse = uploadCall.execute();
             Log.d(TAG, "finish execute time: " + Long.toString(System.currentTimeMillis()));
             if(uploadResponse.isSuccessful()) {
-                // TODO: 停止动画，跳转回去
-
                 toastOnUiThread("上传成功");
                 Log.d(TAG, uploadResponse.message());
                 Log.d(TAG, "jump time: " + Long.toString(System.currentTimeMillis()));
 
                 Intent intent = new Intent(UploadActivity.this, MainActivity.class);
-                // Thread.sleep(1000);
                 delayedExecuteIntent(intent, 700);
-
             }
             else {
-                // TODO: 停止动画
                 loadAnimation(1);
             }
 
@@ -316,7 +290,6 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(UploadActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    // TODO: 上传成功的延迟显示bug还没修复（感觉要改成同步的，但是这样子体验很差）
                     VideoUploadResponse body = response.body();
                     Log.d(TAG, "success: " + body.success);
 
@@ -414,9 +387,5 @@ public class UploadActivity extends AppCompatActivity {
         }
 
         return videoBytes;
-    }
-
-    private static byte[] convertBitmapToBytes(Bitmap imageBitmap) {
-        return null;
     }
 }
