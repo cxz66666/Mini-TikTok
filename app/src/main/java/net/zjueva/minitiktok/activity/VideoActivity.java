@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import net.zjueva.minitiktok.R;
@@ -66,6 +67,7 @@ public class VideoActivity extends AppCompatActivity {
     private ImageView closePreviewImage;
     private ImageView changeCameraImage;
     private LottieAnimationView lottieProgressBarView;
+    private LottieAnimationView lottieStartRecordingView;
     private Button recordButton;
     private Button uploadButton;
     private Button cancelButton;
@@ -113,13 +115,19 @@ public class VideoActivity extends AppCompatActivity {
         changeCameraImage = (ImageView) findViewById(R.id.change_camera);
         timerTextView = (TextView) findViewById(R.id.timer_text);
         lottieProgressBarView = (LottieAnimationView) findViewById(R.id.lottie_progress_bar);
-        context = this;
+        lottieStartRecordingView = (LottieAnimationView) findViewById(R.id.start_recording_lottie);
+        lottieStartRecordingView.setMinAndMaxFrame(28, 100);
+        // lottieStartRecordingView.setMinAndMaxProgress(0.28f, 1f);
+
+
         finishRecording = false;
 
         timerTextView.setAlpha(0.0f);
 
         initButton();
         initImageButton();
+        initLottieView();
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -153,19 +161,6 @@ public class VideoActivity extends AppCompatActivity {
     }
 
 
-    private void requestCameraPermission() {
-        Log.d(TAG, "requestCameraPermission");
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                CAMERA_AUDIO_PERMISSION);
-    }
-
-    private void requestAudioPermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.RECORD_AUDIO},
-                AUDIO_PERMISSION);
-    }
-
     private void initImageButton() {
         closePreviewImage.setOnClickListener((View v) -> {
             Intent intent = new Intent(VideoActivity.this, MainActivity.class);
@@ -188,10 +183,40 @@ public class VideoActivity extends AppCompatActivity {
         });
     }
 
+    private void initLottieView() {
+        lottieStartRecordingView.setVisibility(View.VISIBLE);
+        lottieStartRecordingView.setRepeatMode(LottieDrawable.RESTART);
+        lottieStartRecordingView.setRepeatCount(0);
+
+
+        lottieStartRecordingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!recording) {
+
+                    lottieStartRecordingView.setProgress(0.28f);
+                    lottieStartRecordingView.playAnimation();
+                    recording = true;
+
+                    timerTextView.setAlpha(1f);
+                    setLottieAnimation(0);
+                    timerStart = System.currentTimeMillis();
+                    timerHandler.postDelayed(timerRunnable, 1);
+                    Log.d(TAG, "Start time: " + timerStart);
+                }
+                else {
+                    Log.d(TAG, "stopRecord");
+                    stopRecord();
+                }
+            }
+        });
+    }
+
     private void initButton(){
         uploadButton.setVisibility(View.GONE);
         cancelButton.setVisibility(View.GONE);
-        recordButton.setVisibility(View.VISIBLE);
+
+        recordButton.setVisibility(View.GONE);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,10 +239,13 @@ public class VideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finishRecording = false;
+                recording = false;
                 if(!cameraProvider.isBound(preview))  bindPreview();
                 uploadButton.setVisibility(View.GONE);
                 cancelButton.setVisibility(View.GONE);
-                recordButton.setVisibility(View.VISIBLE);
+                lottieStartRecordingView.setVisibility(View.VISIBLE);
+                lottieStartRecordingView.setProgress(0.28f);
+
             }
         });
 
@@ -248,6 +276,7 @@ public class VideoActivity extends AppCompatActivity {
         float end = hide == 1 ? 0.0f : 1.0f;
         ObjectAnimator lottieProgressBarAnimator = ObjectAnimator.ofFloat(lottieProgressBarView,
                 "alpha", start, end);
+
         lottieProgressBarAnimator.setDuration(0);
         lottieProgressBarAnimator.setRepeatCount(0);
         lottieProgressBarAnimator.start();
@@ -338,13 +367,51 @@ public class VideoActivity extends AppCompatActivity {
         timerTextView.setAlpha(0f);
         cameraProvider.unbindAll();
         recording = false;
-        // stopRecord();
-        // recordButton.setText(R.string.start_recording);
+
         // Camera会自己释放，不用进一步处理
 
-        uploadButton.setVisibility(View.VISIBLE);
-        cancelButton.setVisibility(View.VISIBLE);
-        recordButton.setVisibility(View.GONE);
+
+
+        // lottieStartRecordingView.reverseAnimationSpeed();
+        // lottieStartRecordingView.playAnimation();
+
+        // playRecordButtonAnimation(true);
+        // lottieStartRecordingView.setProgress(1f);
+        Log.d(TAG, ""+lottieStartRecordingView.getProgress());
+        // lottieStartRecordingView.setRepeatCount(0);
+        Log.d(TAG, ""+lottieStartRecordingView.getProgress());;
+
+
+        new Handler(getMainLooper()).postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        uploadButton.setVisibility(View.VISIBLE);
+                        cancelButton.setVisibility(View.VISIBLE);
+                        lottieStartRecordingView.setVisibility(View.GONE);
+                        lottieStartRecordingView.setProgress(0.28f);
+                    }
+                }, 0
+        );
+
+        // recordButton.setVisibility(View.GONE);
+    }
+
+    private void playRecordButtonAnimation(boolean reverse) {
+        lottieStartRecordingView.clearAnimation();
+        lottieStartRecordingView.setAnimation(R.raw.start_recording_center);
+        if(reverse) {
+            lottieStartRecordingView.setProgress(1f);
+            lottieStartRecordingView.setMinProgress(0.28f);
+            lottieStartRecordingView.reverseAnimationSpeed();
+        }
+        else {
+            lottieStartRecordingView.setProgress(0.28f);
+            lottieStartRecordingView.setMaxProgress(1f);
+        }
+
+        lottieStartRecordingView.setRepeatCount(0);
+        lottieStartRecordingView.playAnimation();
     }
 
     private String getOutputMediaPath() {
