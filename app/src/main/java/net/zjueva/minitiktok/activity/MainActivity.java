@@ -170,27 +170,35 @@ public class MainActivity extends BaseActivity {
                 .commit();
         //取消粗体
         if(nowFragment>=0){
-            switch (fragmentIndex){
+            switch (nowFragment){
                 case Constant.home_id:
-                    btn_home.setTextColor(getResources().getColor(R.color.color_simple_text));
+                    btn_home.setTextColor(getResources().getColor(R.color.color_text_darker));
+                    break;
                 case Constant.samecity_id:
-                    btn_samecity.setTextColor(getResources().getColor(R.color.color_simple_text));
+                    btn_samecity.setTextColor(getResources().getColor(R.color.color_text_darker));
+                    break;
                 case Constant.message_id:
-                    btn_message.setTextColor(getResources().getColor(R.color.color_simple_text));
+                    btn_message.setTextColor(getResources().getColor(R.color.color_text_darker));
+                    break;
                 case Constant.me_id:
-                    btn_me.setTextColor(getResources().getColor(R.color.color_simple_text));
+                    btn_me.setTextColor(getResources().getColor(R.color.color_text_darker));
+                    break;
             }
         }
         //设置粗体
         switch(fragmentIndex){
             case Constant.home_id:
                 btn_home.setTextColor(getResources().getColor(R.color.white));
+                break;
             case Constant.samecity_id:
                 btn_samecity.setTextColor(getResources().getColor(R.color.white));
+                break;
             case Constant.message_id:
                 btn_message.setTextColor(getResources().getColor(R.color.white));
+                break;
             case Constant.me_id:
                 btn_me.setTextColor(getResources().getColor(R.color.white));
+                break;
         }
         nowFragment=fragmentIndex;
     }

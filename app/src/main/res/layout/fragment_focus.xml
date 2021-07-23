@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@mipmap/image_info_demo" />
+                android:src="@mipmap/pic_focus_img" />
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
 
